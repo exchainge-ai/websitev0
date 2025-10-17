@@ -100,7 +100,7 @@ const Docs = () => {
             <input
               type="text"
               placeholder="Search documentation..."
-              className="w-full px-6 py-4 rounded-2xl border-2 border-gray-200 focus:border-[#04C61B] focus:outline-none text-lg"
+              className="w-full px-6 py-4 bg-[#0A1F24] border-2 border-[#04C61B]/20 rounded-2xl focus:border-[#04C61B] focus:outline-none text-lg text-white placeholder:text-gray-500"
             />
             <svg
               className="absolute right-6 top-1/2 -translate-y-1/2 w-6 h-6 text-gray-400"
@@ -126,19 +126,19 @@ const Docs = () => {
             {sections.map((section, index) => (
               <div
                 key={index}
-                className="bg-white border-2 border-gray-200 rounded-2xl p-8 hover:border-[#04C61B] hover:shadow-xl transition-all group"
+                className="bg-[#0A1F24] border-2 border-[#04C61B]/20 rounded-2xl p-8 hover:border-[#04C61B] hover:shadow-xl transition-all group"
               >
                 <div className="w-14 h-14 bg-gradient-to-br from-[#04C61B] to-[#6DF77E] rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <section.icon className="w-7 h-7 text-white" />
+                  <section.icon className="w-7 h-7 text-[#0C2B31]" />
                 </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-100">{section.title}</h3>
-                <p className="text-gray-300 mb-6">{section.description}</p>
+                <h3 className="text-2xl font-bold mb-3 text-white">{section.title}</h3>
+                <p className="text-gray-400 mb-6">{section.description}</p>
                 <ul className="space-y-3">
                   {section.links.map((link, i) => (
                     <li key={i}>
                       <a
                         href="#"
-                        className="text-gray-300 hover:text-[#04C61B] transition-colors flex items-center group/link"
+                        className="text-gray-400 hover:text-[#04C61B] transition-colors flex items-center group/link"
                       >
                         <span className="w-1.5 h-1.5 bg-[#04C61B] rounded-full mr-3 group-hover/link:w-2 group-hover/link:h-2 transition-all" />
                         {link}
@@ -155,7 +155,7 @@ const Docs = () => {
       {/* Popular Topics */}
       <section className="py-20 px-4 bg-[#0C2B31]">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold mb-12 text-center">Popular Topics</h2>
+          <h2 className="text-3xl font-bold mb-12 text-center text-white">Popular Topics</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {[
               'How do I upload my first dataset?',
@@ -168,9 +168,9 @@ const Docs = () => {
               <a
                 key={index}
                 href="#"
-                className="bg-white p-6 rounded-xl border-2 border-gray-200 hover:border-[#04C61B] hover:shadow-lg transition-all group"
+                className="bg-[#0A1F24] p-6 rounded-xl border-2 border-[#04C61B]/20 hover:border-[#04C61B] hover:shadow-lg transition-all group"
               >
-                <span className="text-lg text-gray-100 group-hover:text-[#04C61B] transition-colors">
+                <span className="text-lg text-gray-300 group-hover:text-[#04C61B] transition-colors">
                   {topic}
                 </span>
               </a>
@@ -182,21 +182,21 @@ const Docs = () => {
       {/* Support CTA */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-gradient-to-br from-[#04C61B]/10 to-[#6DF77E]/10 rounded-3xl p-12">
-            <h2 className="text-3xl font-bold mb-4">Need More Help?</h2>
+          <div className="bg-gradient-to-br from-[#04C61B]/10 to-[#6DF77E]/10 border border-[#04C61B]/20 rounded-3xl p-12">
+            <h2 className="text-3xl font-bold mb-4 text-white">Need More Help?</h2>
             <p className="text-xl text-gray-300 mb-8">
               Can't find what you're looking for? Our support team is here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={() => router.push('/marketplace')}
-                className="px-8 py-3 bg-gradient-to-r from-[#04C61B] to-[#6DF77E] text-white rounded-lg font-medium hover:shadow-xl hover:shadow-[#04C61B]/30 transition-all"
+                className="px-8 py-3 bg-gradient-to-r from-[#04C61B] to-[#6DF77E] text-[#0C2B31] rounded-lg font-bold hover:shadow-xl hover:shadow-[#04C61B]/30 transition-all"
               >
                 Browse Marketplace
               </button>
               <button
                 onClick={() => router.push('/upload')}
-                className="px-8 py-3 bg-white border-2 border-[#04C61B] text-[#04C61B] rounded-lg font-medium hover:bg-[#04C61B] hover:text-white transition-all"
+                className="px-8 py-3 bg-[#0A1F24] border-2 border-[#04C61B] text-[#04C61B] rounded-lg font-bold hover:bg-[#04C61B] hover:text-[#0C2B31] transition-all"
               >
                 Start Selling
               </button>

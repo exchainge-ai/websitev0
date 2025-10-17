@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Database, LogOut, User } from 'lucide-react';
+import { Database, LogOut, User, Wallet } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 
 const Navigation = () => {
@@ -11,6 +11,7 @@ const Navigation = () => {
 
   const navItems = [
     { name: 'Marketplace', path: '/marketplace' },
+    { name: 'My Requests', path: '/my-requests' },
     { name: 'About', path: '/about' },
     { name: 'How It Works', path: '/how-it-works' },
     { name: 'Docs', path: '/docs' },
@@ -59,6 +60,16 @@ const Navigation = () => {
               </div>
             ) : authenticated ? (
               <div className="flex items-center space-x-3">
+                {/* Wallet Balance (Mock) */}
+                {user?.wallet?.address && (
+                  <div className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-[#04C61B]/10 to-[#6DF77E]/5 rounded-lg border border-[#04C61B]/30">
+                    <Wallet className="w-4 h-4 text-[#04C61B]" />
+                    <span className="text-sm font-bold text-[#04C61B]">
+                      2.45 ETH
+                    </span>
+                  </div>
+                )}
+                {/* User Info */}
                 <div className="flex items-center space-x-2 px-4 py-2 bg-[#04C61B]/10 rounded-lg border border-[#04C61B]/30">
                   <User className="w-4 h-4 text-[#04C61B]" />
                   <span className="text-sm text-gray-300">

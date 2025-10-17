@@ -1,29 +1,20 @@
+'use client';
 
 import React from 'react';
 import { Download, Star, Calendar, FileText, DollarSign } from 'lucide-react';
-
-interface Dataset {
-  id: string;
-  title: string;
-  description: string;
-  price: string;
-  category: string;
-  size: string;
-  format: string;
-  rating: number;
-  downloads: string;
-  lastUpdated: string;
-  tags: string[];
-  image: string;
-}
+import type { Dataset } from '@/data/sampleDatasets';
 
 interface DatasetCardProps {
   dataset: Dataset;
+  onPreview?: (dataset: Dataset) => void;
 }
 
-const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
+const DatasetCard: React.FC<DatasetCardProps> = ({ dataset, onPreview }) => {
   return (
-    <div className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-700 hover:border-blue-500">
+    <div
+      className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-700 hover:border-blue-500 cursor-pointer"
+      onClick={() => onPreview?.(dataset)}
+    >
       {/* Image */}
       <div className="h-48 relative overflow-hidden">
         {dataset.image ? (

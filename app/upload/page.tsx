@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
-import { Upload as UploadIcon, FileText, DollarSign, Shield, CheckCircle, ArrowRight, AlertCircle, Clock, Sparkles, Gavel } from 'lucide-react';
+import { Upload as UploadIcon, FileText, DollarSign, Shield, CheckCircle, ArrowRight, AlertCircle, Clock, Sparkles, Gavel, ExternalLink, Copy } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 const Upload = () => {
   const router = useRouter();
+  const { toast } = useToast();
   const [step, setStep] = useState(1);
   const [uploading, setUploading] = useState(false);
   const [uploadComplete, setUploadComplete] = useState(false);
@@ -58,6 +60,53 @@ const Upload = () => {
               <p className="text-xl text-gray-300 mb-8">
                 Your dataset has been submitted and is now entering our verification process
               </p>
+
+              <div className="bg-[#0A1F24] border border-[#04C61B]/20 rounded-lg p-6 mb-8 max-w-2xl mx-auto">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-bold text-white">Blockchain Receipt</h3>
+                  <span className="px-3 py-1 bg-[#04C61B]/20 text-[#04C61B] rounded-full text-sm">Confirmed</span>
+                </div>
+                <div className="space-y-3 text-sm">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-400">Transaction Signature:</span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-[#04C61B] font-mono">5Qn7...Km9X</code>
+                      <button
+                        onClick={() => {
+                          navigator.clipboard.writeText('5Qn7R8mP3vK4wL2nB6yJ9xC1zF5dH7sT4gA8kE3mV2pL9oU6rY1qW8tN4jKm9X');
+                          toast({ title: "Copied!", description: "Transaction signature copied to clipboard" });
+                        }}
+                        className="p-1 hover:bg-[#04C61B]/10 rounded transition-all"
+                      >
+                        <Copy className="w-4 h-4 text-gray-400 hover:text-[#04C61B]" />
+                      </button>
+                      <a
+                        href="https://solscan.io"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1 hover:bg-[#04C61B]/10 rounded transition-all"
+                      >
+                        <ExternalLink className="w-4 h-4 text-gray-400 hover:text-[#04C61B]" />
+                      </a>
+                    </div>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Network:</span>
+                    <span className="text-gray-100">Solana Mainnet</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Slot:</span>
+                    <span className="text-gray-100">284,392,847</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Transaction Fee:</span>
+                    <span className="text-gray-100">0.000005 SOL ($0.0009)</span>
+                  </div>
+                </div>
+                <p className="text-gray-400 text-xs mt-4 text-center">
+                  Your dataset metadata has been permanently recorded on Solana for transparency and provenance
+                </p>
+              </div>
             </div>
 
             {/* Verification Notice */}

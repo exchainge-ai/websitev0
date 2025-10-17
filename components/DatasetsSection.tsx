@@ -1,9 +1,11 @@
+'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import DatasetCard from './DatasetCard';
 import SearchBar from './SearchBar';
 import CategoryFilter from './CategoryFilter';
-import { sampleDatasets } from '../data/sampleDatasets';
+import DatasetPreviewModal from './DatasetPreviewModal';
+import { sampleDatasets, type Dataset } from '../data/sampleDatasets';
 
 interface DatasetsSectionProps {
   searchTerm: string;
@@ -12,18 +14,26 @@ interface DatasetsSectionProps {
   onCategoryChange: (value: string) => void;
 }
 
-const DatasetsSection = ({ 
-  searchTerm, 
-  onSearchChange, 
-  selectedCategory, 
-  onCategoryChange 
+const DatasetsSection = ({
+  searchTerm,
+  onSearchChange,
+  selectedCategory,
+  onCategoryChange
 }: DatasetsSectionProps) => {
+  const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const filteredDatasets = sampleDatasets.filter(dataset => {
     const matchesSearch = dataset.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          dataset.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || dataset.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  const handlePreview = (dataset: Dataset) => {
+    setSelectedDataset(dataset);
+    setIsModalOpen(true);
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-gray-900 relative">
@@ -50,7 +60,7 @@ const DatasetsSection = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
         {filteredDatasets.map((dataset) => (
-          <DatasetCard key={dataset.id} dataset={dataset} />
+          <DatasetCard key={dataset.id} dataset={dataset} onPreview={handlePreview} />
         ))}
       </div>
 
@@ -61,6 +71,12 @@ const DatasetsSection = ({
           </button>
         </div>
       )}
+
+      <DatasetPreviewModal
+        dataset={selectedDataset}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };
