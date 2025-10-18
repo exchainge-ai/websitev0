@@ -56,9 +56,9 @@ export default function DatasetPreviewModal({ dataset, isOpen, onClose }: Datase
                 <span className="px-3 py-1 bg-[#04C61B]/20 text-[#04C61B] rounded-full text-sm">
                   {dataset.category}
                 </span>
-                {dataset.tags?.split(',').map((tag: string, idx: number) => (
+                {dataset.tags?.map((tag: string, idx: number) => (
                   <span key={idx} className="px-3 py-1 bg-[#0C2B31] text-gray-300 rounded-full text-sm">
-                    {tag.trim()}
+                    {tag}
                   </span>
                 ))}
               </div>
@@ -203,12 +203,12 @@ export default function DatasetPreviewModal({ dataset, isOpen, onClose }: Datase
                 <p className="text-white font-medium">Commercial Use Allowed</p>
               </div>
               <div>
-                <p className="text-gray-400 mb-1">Creator</p>
-                <p className="text-white font-medium">{dataset.creator || 'RoboData Labs'}</p>
+                <p className="text-gray-400 mb-1">Downloads</p>
+                <p className="text-white font-medium">{dataset.downloads.toLocaleString()}</p>
               </div>
               <div>
-                <p className="text-gray-400 mb-1">Samples</p>
-                <p className="text-white font-medium">{dataset.samples || '15,000 labeled images'}</p>
+                <p className="text-gray-400 mb-1">Rating</p>
+                <p className="text-white font-medium">{dataset.rating} / 5.0</p>
               </div>
             </div>
           </div>

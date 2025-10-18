@@ -35,7 +35,8 @@ const Upload = () => {
 
   const handlePublish = () => {
     setUploading(true);
-    // Simulate upload process
+    // MOCKED: In production, this would call the Solana program to store metadata on-chain
+    // and upload files to decentralized storage (IPFS/Arweave)
     setTimeout(() => {
       setUploading(false);
       setUploadComplete(true);
@@ -70,7 +71,7 @@ const Upload = () => {
                   <div className="flex justify-between items-center">
                     <span className="text-gray-400">Transaction Signature:</span>
                     <div className="flex items-center gap-2">
-                      <code className="text-[#04C61B] font-mono">5Qn7...Km9X</code>
+                      <code className="text-[#04C61B] font-mono">5Qn7...Km9X</code> {/* MOCKED */}
                       <button
                         onClick={() => {
                           navigator.clipboard.writeText('5Qn7R8mP3vK4wL2nB6yJ9xC1zF5dH7sT4gA8kE3mV2pL9oU6rY1qW8tN4jKm9X');
@@ -96,11 +97,11 @@ const Upload = () => {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Slot:</span>
-                    <span className="text-gray-100">284,392,847</span>
+                    <span className="text-gray-100">284,392,847</span> {/* MOCKED */}
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-400">Transaction Fee:</span>
-                    <span className="text-gray-100">0.000005 SOL ($0.0009)</span>
+                    <span className="text-gray-100">0.000005 SOL ($0.0009)</span> {/* MOCKED */}
                   </div>
                 </div>
                 <p className="text-gray-400 text-xs mt-4 text-center">

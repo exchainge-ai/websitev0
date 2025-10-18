@@ -22,6 +22,8 @@ export default function RequestDataPage() {
 
   const handleSubmit = () => {
     setSubmitting(true);
+    // MOCKED: In production, this would submit the request to the Solana program
+    // and notify potential data sellers via on-chain events
     setTimeout(() => {
       setSubmitting(false);
       setRequestComplete(true);
