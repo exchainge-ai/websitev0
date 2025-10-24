@@ -1,29 +1,30 @@
-# ExchAInge
+Exchainge Frontend
+==================
+- Next.js 15 + React 19 single-package app cloned from the monorepo frontend.
+- Pure client UI: all data flows through the external REST API defined by `NEXT_PUBLIC_API_BASE_URL`.
+- Styled with TailwindCSS 4, components live under `src/app` and `src/components`.
+- Bundled and managed with Bun (Node.js works too, but Bun scripts are the project default).
 
-Marketplace for AI training datasets. Built on Solana.
+## Requirements
+- Bun v1.1+ (or Node 20+ if you prefer `npm` / `pnpm`)
+- Copy `.env.template` → `.env.local` and provide real values.
+  - Required: `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_PRIVY_APP_ID`, `NEXT_PUBLIC_PRIVY_CLIENT_ID`
+  - Optional: `NEXT_PUBLIC_SOLANA_RPC_URL`, `NEXT_PUBLIC_SUPABASE_*`
 
-## Overview
-
-Web interface for ExchAInge marketplace. Backend infrastructure, smart contracts, and core systems are in private repositories.
-
-## Tech Stack
-
-Next.js 15, TypeScript, Tailwind CSS, Solana Web3.js
-
-## Getting Started
-
-### Installation
-
+## Install & Develop
 ```bash
 bun install
-cp .env.example .env
-bun run dev
+cp .env.template .env.local  # then edit with real values
+bun run dev                  # http://localhost:3000
 ```
 
-## Architecture
+## Quality gates
+```bash
+bun run lint
+bun run build
+```
 
-Frontend interface only. All transaction processing, verification, storage, and marketplace logic handled by private backend services.
-
-## License
-
-Proprietary. All rights reserved.
+## Project Notes
+- API helpers live in `src/lib/api/` and centralize calls to the backend.
+- Dataset mapping/helpers are in `src/lib/mappers/dataset.ts`; update there if the backend response changes.
+- No backend/server utilities are bundled; anything beyond fetches must be done on the API side.
