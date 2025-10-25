@@ -1,6 +1,6 @@
 "use client";
 
-import { profanity } from "leo-profanity";
+import profanity from "leo-profanity";
 
 let dictionaryLoaded = false;
 
