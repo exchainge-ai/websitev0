@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus, Filter, Search, Send, X, Check } from 'lucide-react';
+import { Plus, Filter, Send, X } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 import { containsProhibitedLanguage } from '@/lib/safety/profanity';
 
@@ -604,77 +604,126 @@ export default function DiscoveryHub() {
     </div>
 
     {showNewPostModal && (
-      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/80 px-4">
-        <div className="w-full max-w-lg bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+        <div className="w-full max-w-2xl bg-[#1a2332] border border-gray-700 rounded-xl shadow-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-700">
             <div>
-              <h3 className="text-lg font-semibold text-white">Signal a Dataset</h3>
-              <p className="text-sm text-gray-400">
-                Share a quick preview so buyers know what you&apos;re bringing soon.
+              <h3 className="text-xl font-semibold text-white">Signal an Upcoming Dataset</h3>
+              <p className="text-sm text-gray-400 mt-1">
+                Float an unverified dataset you may publish soon and see who&apos;s interested.
               </p>
             </div>
             <button
               onClick={() => setShowNewPostModal(false)}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded transition-colors"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="px-6 py-5 space-y-4">
-            <input
-              value={newPost.title}
-              onChange={(e) => setNewPost((prev) => ({ ...prev, title: e.target.value }))}
-              placeholder="Dataset title"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <textarea
-              value={newPost.description}
-              onChange={(e) => setNewPost((prev) => ({ ...prev, description: e.target.value }))}
-              placeholder="What makes this dataset valuable?"
-              rows={4}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <select
-                value={newPost.category}
-                onChange={(e) =>
-                  setNewPost((prev) => ({ ...prev, category: e.target.value as typeof prev.category }))
-                }
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
+
+          {/* Form */}
+          <div className="px-6 py-6 space-y-5">
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Title
+              </label>
               <input
-                value={newPost.dataSize}
-                onChange={(e) => setNewPost((prev) => ({ ...prev, dataSize: e.target.value }))}
-                placeholder="Approx. size (e.g. 120GB)"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={newPost.title}
+                onChange={(e) => setNewPost((prev) => ({ ...prev, title: e.target.value }))}
+                placeholder="Headline for your potential dataset drop"
+                className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            <input
-              value={newPost.hardwareType}
-              onChange={(e) => setNewPost((prev) => ({ ...prev, hardwareType: e.target.value }))}
-              placeholder="Hardware used (optional)"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Description
+              </label>
+              <textarea
+                value={newPost.description}
+                onChange={(e) => setNewPost((prev) => ({ ...prev, description: e.target.value }))}
+                placeholder="Describe the dataset you might release and what makes it valuable."
+                rows={4}
+                className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              />
+            </div>
+
+            {/* Category and Hardware Type */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Category
+                </label>
+                <select
+                  value={newPost.category}
+                  onChange={(e) =>
+                    setNewPost((prev) => ({ ...prev, category: e.target.value as typeof prev.category }))
+                  }
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                >
+                  {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Hardware Type
+                </label>
+                <input
+                  value={newPost.hardwareType}
+                  onChange={(e) => setNewPost((prev) => ({ ...prev, hardwareType: e.target.value }))}
+                  placeholder="e.g. Humanoid robot rig"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Data Size and Author/Org */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Approx. Data Size
+                </label>
+                <input
+                  value={newPost.dataSize}
+                  onChange={(e) => setNewPost((prev) => ({ ...prev, dataSize: e.target.value }))}
+                  placeholder="e.g. ~250GB"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Your Name / Org
+                </label>
+                <input
+                  value={newPost.author}
+                  onChange={(e) => setNewPost((prev) => ({ ...prev, author: e.target.value }))}
+                  placeholder="Visible to people browsing"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-800 bg-gray-900/80 rounded-b-2xl">
+
+          {/* Footer */}
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-700 bg-[#0f1824]">
             <button
               onClick={() => setShowNewPostModal(false)}
-              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+              className="px-5 py-2.5 text-sm font-medium text-gray-300 hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handlePostToBoard}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors"
             >
-              <Check className="w-4 h-4" />
-              Post to Pinboard
+              Signal Dataset Drop
             </button>
           </div>
         </div>
@@ -682,83 +731,132 @@ export default function DiscoveryHub() {
     )}
 
     {showNewRequestModal && (
-      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/80 px-4">
-        <div className="w-full max-w-lg bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/70 backdrop-blur-sm px-4">
+        <div className="w-full max-w-2xl bg-[#1a2332] border border-gray-700 rounded-xl shadow-2xl">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-5 border-b border-gray-700">
             <div>
-              <h3 className="text-lg font-semibold text-white">Post a Data Request</h3>
-              <p className="text-sm text-gray-400">
+              <h3 className="text-xl font-semibold text-white">Post a Data Request</h3>
+              <p className="text-sm text-gray-400 mt-1">
                 Let the community know what data you&apos;re searching for and your ideal budget.
               </p>
             </div>
             <button
               onClick={() => setShowNewRequestModal(false)}
-              className="p-2 text-gray-400 hover:text-white transition-colors"
+              className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-700 rounded transition-colors"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
           </div>
-          <div className="px-6 py-5 space-y-4">
-            <input
-              value={newRequest.title}
-              onChange={(e) => setNewRequest((prev) => ({ ...prev, title: e.target.value }))}
-              placeholder="Request title"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <textarea
-              value={newRequest.description}
-              onChange={(e) => setNewRequest((prev) => ({ ...prev, description: e.target.value }))}
-              placeholder="Describe the dataset you need"
-              rows={4}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <select
-                value={newRequest.category}
-                onChange={(e) =>
-                  setNewRequest((prev) => ({
-                    ...prev,
-                    category: e.target.value as typeof prev.category,
-                  }))
-                }
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
-                  <option key={category.value} value={category.value}>
-                    {category.label}
-                  </option>
-                ))}
-              </select>
+
+          {/* Form */}
+          <div className="px-6 py-6 space-y-5">
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Title
+              </label>
               <input
-                value={newRequest.estimatedBudget}
-                onChange={(e) =>
-                  setNewRequest((prev) => ({ ...prev, estimatedBudget: e.target.value }))
-                }
-                placeholder="Budget (e.g. $5K - $10K)"
-                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={newRequest.title}
+                onChange={(e) => setNewRequest((prev) => ({ ...prev, title: e.target.value }))}
+                placeholder="Request title"
+                className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
               />
             </div>
-            <input
-              value={newRequest.requiredHardware}
-              onChange={(e) =>
-                setNewRequest((prev) => ({ ...prev, requiredHardware: e.target.value }))
-              }
-              placeholder="Required hardware (optional)"
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+
+            {/* Description */}
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Description
+              </label>
+              <textarea
+                value={newRequest.description}
+                onChange={(e) => setNewRequest((prev) => ({ ...prev, description: e.target.value }))}
+                placeholder="Describe the dataset you need"
+                rows={4}
+                className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
+              />
+            </div>
+
+            {/* Category and Budget */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Category
+                </label>
+                <select
+                  value={newRequest.category}
+                  onChange={(e) =>
+                    setNewRequest((prev) => ({
+                      ...prev,
+                      category: e.target.value as typeof prev.category,
+                    }))
+                  }
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                >
+                  {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
+                    <option key={category.value} value={category.value}>
+                      {category.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Estimated Budget
+                </label>
+                <input
+                  value={newRequest.estimatedBudget}
+                  onChange={(e) =>
+                    setNewRequest((prev) => ({ ...prev, estimatedBudget: e.target.value }))
+                  }
+                  placeholder="e.g. $5K - $10K"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+
+            {/* Hardware and Author/Org */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Required Hardware
+                </label>
+                <input
+                  value={newRequest.requiredHardware}
+                  onChange={(e) =>
+                    setNewRequest((prev) => ({ ...prev, requiredHardware: e.target.value }))
+                  }
+                  placeholder="e.g. Robotic Hand"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Your Name / Org
+                </label>
+                <input
+                  value={newRequest.author}
+                  onChange={(e) => setNewRequest((prev) => ({ ...prev, author: e.target.value }))}
+                  placeholder="Visible to people browsing"
+                  className="w-full bg-[#0f1824] border border-gray-600 rounded-lg px-4 py-3 text-sm text-gray-300 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                />
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-800 bg-gray-900/80 rounded-b-2xl">
+
+          {/* Footer */}
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-700 bg-[#0f1824]">
             <button
               onClick={() => setShowNewRequestModal(false)}
-              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+              className="px-5 py-2.5 text-sm font-medium text-gray-300 hover:text-white transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handlePostRequest}
-              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors"
             >
-              <Check className="w-4 h-4" />
               Submit Request
             </button>
           </div>
