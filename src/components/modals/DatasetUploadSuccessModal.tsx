@@ -64,6 +64,32 @@ export function DatasetUploadSuccessModal({
     setTimeout(() => setCopiedTx(false), 2000);
   };
 
+  const saveReceipt = () => {
+    const receiptText = `
+      ExchAInge Dataset Upload Receipt
+      ================================
+
+      Dataset ID: ${datasetId || 'N/A'}
+      Dataset Hash: ${datasetHash || 'N/A'}
+      Transaction Hash: ${blockchainTxHash || 'N/A'}
+      Blockchain: Solana ${networkDisplayName}
+      Timestamp: ${displayTimestamp}
+      Explorer URL: ${blockchainExplorerUrl || 'N/A'}
+
+      This receipt confirms your dataset has been registered on the Solana blockchain.
+      `.trim();
+
+    const blob = new Blob([receiptText], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `exchainge-receipt-${datasetId || 'dataset'}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -200,21 +226,35 @@ export function DatasetUploadSuccessModal({
           )}
 
           {/* Actions */}
-          <div className="flex gap-3 mt-6">
-            <button
-              onClick={onClose}
-              className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
-            >
-              Close
-            </button>
+          <div className="flex flex-col gap-3 mt-6">
+            {/* Primary action - View Your Dataset */}
             {datasetId && (
               <a
                 href={`/dashboard/dataset/${datasetId}`}
-                className="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg font-medium transition-colors text-center"
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white px-4 py-3 rounded-lg font-semibold transition-colors text-center flex items-center justify-center gap-2"
               >
-                View Dataset
+                <ExternalLink className="w-4 h-4" />
+                View Your Dataset
               </a>
             )}
+
+            {/* Secondary actions */}
+            <div className="flex gap-3">
+              {blockchainTxHash && (
+                <button
+                  onClick={saveReceipt}
+                  className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
+                >
+                  Save Receipt
+                </button>
+              )}
+              <button
+                onClick={onClose}
+                className="flex-1 bg-gray-700 hover:bg-gray-600 text-white px-4 py-2.5 rounded-lg font-medium transition-colors"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>

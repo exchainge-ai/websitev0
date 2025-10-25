@@ -38,7 +38,6 @@ import { formatBytes } from "@/lib/mappers/dataset";
 import { UPLOAD_LIMITS } from "@/lib/constants/storage";
 import { apiFetch, ApiError } from "@/lib/api/client";
 import { containsProhibitedLanguage } from "@/lib/safety/profanity";
-import { DatasetRegistrationPanel } from "@/components/solana/DatasetRegistrationPanel";
 
 type UploadStep =
   | "upload"
@@ -1611,7 +1610,7 @@ export function UploadContent() {
 
           {/* Complete Step */}
           {step === "complete" && (
-            <div className="mx-auto flex max-w-4xl flex-col gap-6">
+            <div className="mx-auto flex max-w-2xl flex-col gap-6">
               <div className="rounded-xl bg-gray-800 p-8 text-center">
                 <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-green-900/30">
                   <CheckCircle className="h-12 w-12 text-green-500" />
@@ -1661,19 +1660,11 @@ export function UploadContent() {
                   {isSubmitting && <Loader2 className="h-5 w-5 animate-spin" />}
                   {isSubmitting ? "Publishing..." : "Publish Dataset"}
                 </button>
-              </div>
 
-              <DatasetRegistrationPanel
-                datasetId={createdDatasetId}
-                defaultFileKey={derivedFileKey}
-                defaultFileSizeBytes={
-                  derivedFileSizeBytes && derivedFileSizeBytes > 0 ? derivedFileSizeBytes : null
-                }
-                defaultDatasetHash={datasetHash}
-                onRegistered={(payload) => {
-                  console.log("[Upload] Dataset registered on-chain", payload);
-                }}
-              />
+                <p className="mt-4 text-xs text-gray-500">
+                  Your dataset will be automatically registered on the Solana blockchain
+                </p>
+              </div>
             </div>
           )}
 
