@@ -33,20 +33,19 @@ export function PrivyWrapper({ children }: PrivyWrapperProps) {
 
   useEffect(() => {
     let isMounted = true;
-
-    import("@privy-io/react-auth")
-      .then((module) => {
+    (async () => {
+      try {
+        const module = await import("@privy-io/react-auth");
         if (isMounted) {
           setPrivyModule(module);
         }
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("[PrivyWrapper] Failed to load Privy provider:", error);
         if (isMounted) {
           setPrivyModule(null);
         }
-      });
-
+      }
+    })();
     return () => {
       isMounted = false;
     };

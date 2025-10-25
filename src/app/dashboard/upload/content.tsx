@@ -709,11 +709,14 @@ export function UploadContent() {
       const datasetId: string | undefined = payload?.data?.id;
       const sessionInfo = payload?.uploadSession ?? null;
 
-      console.log('[DEBUG] API Response:', {
+      console.log('[DEBUG] Full API Response:', payload);
+      console.log('[DEBUG] API Response Data:', {
         datasetId,
         datasetHash: payload?.data?.datasetHash,
         blockchainTxHash: payload?.data?.blockchainTxHash,
         blockchainExplorerUrl: payload?.data?.blockchainExplorerUrl,
+        hasData: !!payload?.data,
+        dataKeys: payload?.data ? Object.keys(payload.data) : [],
       });
 
       // Store dataset ID for blockchain proof

@@ -20,6 +20,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Force cache bust in development */}
+        {process.env.NODE_ENV === "development" && (
+          <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        )}
+      </head>
       <body
         className="min-h-screen bg-background font-sans antialiased"
         suppressHydrationWarning={true}

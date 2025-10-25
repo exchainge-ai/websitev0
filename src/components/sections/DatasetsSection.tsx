@@ -17,6 +17,7 @@ interface DatasetsSectionProps {
   selectedCategory: string;
   onCategoryChange: (value: string) => void;
   currentUserId?: string;
+  highlightDatasetId?: string;
 }
 
 const CATEGORY_LABEL_TO_SLUG: Record<string, DatasetCategory | undefined> = {
@@ -52,11 +53,32 @@ const DatasetsSection = ({
   selectedCategory,
   onCategoryChange,
   currentUserId,
+  highlightDatasetId,
 }: DatasetsSectionProps) => {
   const [rawDatasets, setRawDatasets] = useState<DatasetDTO[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
+
+  /**
+   * Scrolls to and highlights a specific dataset when accessed via deep link.
+   * Used to provide direct navigation context from upload confirmation.
+   */
+  useEffect(() => {
+    if (highlightDatasetId && !isLoading) {
+      const timer = setTimeout(() => {
+        const element = document.getElementById(`dataset-${highlightDatasetId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+          element.classList.add("animate-highlight");
+          setTimeout(() => {
+            element.classList.remove("animate-highlight");
+          }, 3000);
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [highlightDatasetId, isLoading]);
 
   useEffect(() => {
     let cancelled = false;
@@ -231,7 +253,13 @@ const DatasetsSection = ({
 
           {filteredDatasets.length > 0 ? (
             filteredDatasets.map((dataset) => (
-              <DatasetCard key={dataset.id} dataset={dataset} />
+              <div
+                key={dataset.id}
+                id={`dataset-${dataset.id}`}
+                className={dataset.id === highlightDatasetId ? "highlight-dataset" : ""}
+              >
+                <DatasetCard dataset={dataset} />
+              </div>
             ))
           ) : (
             <div className="col-span-3 py-16 text-center">

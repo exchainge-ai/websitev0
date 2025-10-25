@@ -1,6 +1,7 @@
 "use client";
 
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import HeroSection from "@/components/sections/HeroSection";
 import CryptoBackground from "@/components/shared/CryptoBackground";
 import DatasetsSection from "@/components/sections/DatasetsSection";
@@ -11,6 +12,9 @@ import ContactSection from "@/components/sections/ContactSection";
 import TeamSection from "@/components/sections/TeamSection";
 
 export default function MarketplacePage() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams?.get("highlight");
+
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [email, setEmail] = useState("");
@@ -78,6 +82,7 @@ export default function MarketplacePage() {
             onSearchChange={setSearchTerm}
             selectedCategory={selectedCategory}
             onCategoryChange={setSelectedCategory}
+            highlightDatasetId={highlightId || undefined}
           />
         </Suspense>
 

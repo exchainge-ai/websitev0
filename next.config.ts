@@ -8,6 +8,7 @@ const __dirname = path.dirname(__filename);
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.resolve(__dirname),
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
 
   // Configure turbopack aliases for the standalone app
   turbopack: {
@@ -48,10 +49,12 @@ const nextConfig: NextConfig = {
             value: "1; mode=block",
           },
 
-          // Performance headers
+          // Cache headers - disable caching in development
           {
             key: "Cache-Control",
-            value: "public, max-age=3600, stale-while-revalidate=86400",
+            value: process.env.NODE_ENV === "development"
+              ? "no-cache, no-store, must-revalidate"
+              : "public, max-age=3600, stale-while-revalidate=86400",
           },
         ],
       },
