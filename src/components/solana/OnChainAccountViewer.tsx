@@ -91,7 +91,7 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
         lamports: accountInfo.lamports,
         owner: accountInfo.owner.toBase58(),
         executable: accountInfo.executable,
-        rentEpoch: accountInfo.rentEpoch,
+        rentEpoch: accountInfo.rentEpoch ?? -1,
         data: accountData,
       });
       setLastFetchedSlot(response.context.slot);
