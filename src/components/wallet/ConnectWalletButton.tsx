@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { WalletReadyState } from "@solana/wallet-adapter-base";
+import { WalletReadyState, type WalletName } from "@solana/wallet-adapter-base";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Loader2, LogOut, Wallet as WalletIcon } from "lucide-react";
 
@@ -25,7 +25,7 @@ export function ConnectWalletButton() {
     wallets,
   } = useWallet();
   const [error, setError] = useState<string | null>(null);
-  const [selectedWalletName, setSelectedWalletName] = useState<string>("");
+  const [selectedWalletName, setSelectedWalletName] = useState<WalletName | "">("");
 
   const addressLabel = useMemo(() => {
     if (!publicKey) {
@@ -42,20 +42,23 @@ export function ConnectWalletButton() {
     if (wallet?.adapter.name) {
       setSelectedWalletName(wallet.adapter.name);
     } else if (!selectedWalletName && wallets.length > 0) {
-      setSelectedWalletName(wallets[0]?.adapter.name ?? "");
+      const first = wallets[0]?.adapter.name;
+      if (first) {
+        setSelectedWalletName(first);
+      }
     }
   }, [wallet?.adapter.name, wallets, selectedWalletName]);
 
   const walletOptions = useMemo(() => {
     return wallets.map(({ adapter }) => ({
-      name: adapter.name,
+      name: adapter.name as WalletName,
       readyState: adapter.readyState,
     }));
   }, [wallets]);
 
   const handleSelectChange = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const nextName = event.target.value;
+      const nextName = event.target.value as WalletName | "";
       setSelectedWalletName(nextName);
       setError(null);
       if (nextName) {
