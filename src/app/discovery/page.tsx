@@ -1,9 +1,9 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Plus, Filter, Search, Send, X, Check } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
+import { containsProhibitedLanguage } from '@/lib/safety/profanity';
 
 interface StickyPost {
   id: string;
@@ -147,7 +147,6 @@ const COLOR_MAP = {
 };
 
 export default function DiscoveryHub() {
-  const router = useRouter();
   const { authenticated, login } = usePrivy();
   const [posts, setPosts] = useState<StickyPost[]>(DEMO_POSTS);
   const [requests, setRequests] = useState<DataRequest[]>(DEMO_REQUESTS);
@@ -182,10 +181,38 @@ export default function DiscoveryHub() {
       ? posts
       : posts.filter((p) => p.category === selectedCategory);
 
+  const openPostModal = () => {
+    if (!authenticated) {
+      login();
+      return;
+    }
+    setShowNewPostModal(true);
+  };
+
+  const openRequestModal = () => {
+    if (!authenticated) {
+      login();
+      return;
+    }
+    setShowNewRequestModal(true);
+  };
+
   // Add new sticky post to pinboard
   const handlePostToBoard = () => {
     if (!newPost.title.trim() || !newPost.description.trim()) {
       alert('Please fill in title and description');
+      return;
+    }
+
+    if (
+      [
+        newPost.title,
+        newPost.description,
+        newPost.hardwareType,
+        newPost.dataSize,
+      ].some((value) => value && containsProhibitedLanguage(value))
+    ) {
+      alert('Please remove inappropriate language before posting.');
       return;
     }
 
@@ -203,7 +230,7 @@ export default function DiscoveryHub() {
       createdAt: new Date(),
     };
 
-    setPosts([newStickyPost, ...posts]);
+    setPosts((prev) => [newStickyPost, ...prev]);
     setNewPost({
       title: '',
       description: '',
@@ -222,6 +249,18 @@ export default function DiscoveryHub() {
       return;
     }
 
+    if (
+      [
+        newRequest.title,
+        newRequest.description,
+        newRequest.requiredHardware,
+        newRequest.estimatedBudget,
+      ].some((value) => value && containsProhibitedLanguage(value))
+    ) {
+      alert('Please remove inappropriate language before posting.');
+      return;
+    }
+
     const newDataRequest: DataRequest = {
       id: `req-${Date.now()}`,
       title: newRequest.title,
@@ -234,7 +273,7 @@ export default function DiscoveryHub() {
       interested: 0,
     };
 
-    setRequests([newDataRequest, ...requests]);
+    setRequests((prev) => [newDataRequest, ...prev]);
     setNewRequest({
       title: '',
       description: '',
@@ -247,6 +286,7 @@ export default function DiscoveryHub() {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
       {/* Animated background elements */}
       <div className="absolute inset-0 opacity-10">
@@ -267,19 +307,22 @@ export default function DiscoveryHub() {
                 Explore upcoming datasets and submit your data needs
               </p>
             </div>
-            <button
-              onClick={() => {
-                if (!authenticated) {
-                  login();
-                  return;
-                }
-                router.push('/dashboard');
-              }}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-all"
-            >
-              <Plus className="w-5 h-5" />
-              {authenticated ? 'Post Dataset' : 'Sign In to Post'}
-            </button>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={openPostModal}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                {authenticated ? 'Signal Dataset' : 'Sign In to Signal'}
+              </button>
+              <button
+                onClick={openRequestModal}
+                className="bg-gray-800 hover:bg-gray-700 text-white px-6 py-2 rounded-lg flex items-center gap-2 transition-all border border-gray-700"
+              >
+                <Send className="w-5 h-5" />
+                {authenticated ? 'Post Request' : 'Sign In to Request'}
+              </button>
+            </div>
           </div>
 
           {/* Tabs */}
@@ -541,16 +584,16 @@ export default function DiscoveryHub() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => router.push('/dashboard')}
+              onClick={openPostModal}
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all"
             >
-              Post Your Dataset
+              Signal a Dataset
             </button>
             <button
-              onClick={() => router.push('/marketplace')}
-              className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold transition-all"
+              onClick={openRequestModal}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold transition-all border border-gray-600"
             >
-              Go to Marketplace
+              Post a Request
             </button>
           </div>
           <p className="text-gray-500 text-sm mt-6">
@@ -559,5 +602,169 @@ export default function DiscoveryHub() {
         </div>
       </div>
     </div>
+
+    {showNewPostModal && (
+      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/80 px-4">
+        <div className="w-full max-w-lg bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Signal a Dataset</h3>
+              <p className="text-sm text-gray-400">
+                Share a quick preview so buyers know what you&apos;re bringing soon.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowNewPostModal(false)}
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="px-6 py-5 space-y-4">
+            <input
+              value={newPost.title}
+              onChange={(e) => setNewPost((prev) => ({ ...prev, title: e.target.value }))}
+              placeholder="Dataset title"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <textarea
+              value={newPost.description}
+              onChange={(e) => setNewPost((prev) => ({ ...prev, description: e.target.value }))}
+              placeholder="What makes this dataset valuable?"
+              rows={4}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <select
+                value={newPost.category}
+                onChange={(e) =>
+                  setNewPost((prev) => ({ ...prev, category: e.target.value as typeof prev.category }))
+                }
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                value={newPost.dataSize}
+                onChange={(e) => setNewPost((prev) => ({ ...prev, dataSize: e.target.value }))}
+                placeholder="Approx. size (e.g. 120GB)"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <input
+              value={newPost.hardwareType}
+              onChange={(e) => setNewPost((prev) => ({ ...prev, hardwareType: e.target.value }))}
+              placeholder="Hardware used (optional)"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-800 bg-gray-900/80 rounded-b-2xl">
+            <button
+              onClick={() => setShowNewPostModal(false)}
+              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handlePostToBoard}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            >
+              <Check className="w-4 h-4" />
+              Post to Pinboard
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {showNewRequestModal && (
+      <div className="fixed inset-0 z-30 flex items-center justify-center bg-black/80 px-4">
+        <div className="w-full max-w-lg bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl">
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Post a Data Request</h3>
+              <p className="text-sm text-gray-400">
+                Let the community know what data you&apos;re searching for and your ideal budget.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowNewRequestModal(false)}
+              className="p-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+          <div className="px-6 py-5 space-y-4">
+            <input
+              value={newRequest.title}
+              onChange={(e) => setNewRequest((prev) => ({ ...prev, title: e.target.value }))}
+              placeholder="Request title"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <textarea
+              value={newRequest.description}
+              onChange={(e) => setNewRequest((prev) => ({ ...prev, description: e.target.value }))}
+              placeholder="Describe the dataset you need"
+              rows={4}
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <select
+                value={newRequest.category}
+                onChange={(e) =>
+                  setNewRequest((prev) => ({
+                    ...prev,
+                    category: e.target.value as typeof prev.category,
+                  }))
+                }
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {CATEGORIES.filter((c) => c.value !== 'all').map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
+                  </option>
+                ))}
+              </select>
+              <input
+                value={newRequest.estimatedBudget}
+                onChange={(e) =>
+                  setNewRequest((prev) => ({ ...prev, estimatedBudget: e.target.value }))
+                }
+                placeholder="Budget (e.g. $5K - $10K)"
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+            <input
+              value={newRequest.requiredHardware}
+              onChange={(e) =>
+                setNewRequest((prev) => ({ ...prev, requiredHardware: e.target.value }))
+              }
+              placeholder="Required hardware (optional)"
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-gray-800 bg-gray-900/80 rounded-b-2xl">
+            <button
+              onClick={() => setShowNewRequestModal(false)}
+              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handlePostRequest}
+              className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            >
+              <Check className="w-4 h-4" />
+              Submit Request
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   );
 }

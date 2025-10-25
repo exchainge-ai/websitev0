@@ -7,6 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  outputFileTracingRoot: path.resolve(__dirname),
 
   // Configure turbopack aliases for the standalone app
   turbopack: {

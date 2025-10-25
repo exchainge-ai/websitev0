@@ -139,49 +139,76 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
     };
   }, [dataset]);
 
-  const fetchDataset = useCallback(async () => {
-    if (!datasetId) {
-      setError("Missing dataset ID");
-      setIsLoading(false);
+  const fetchDataset = useCallback(
+    async ({ silent = false }: { silent?: boolean } = {}) => {
+      if (!datasetId) {
+        setError("Missing dataset ID");
+        if (!silent) {
+          setIsLoading(false);
+        }
+        return;
+      }
+
+      if (!silent) {
+        setIsLoading(true);
+      }
+      setError(null);
+
+      try {
+        const token = await getAccessToken();
+        if (!token) {
+          throw new Error("Missing access token");
+        }
+
+        const payload = await apiFetch<{ data?: DatasetDTO }>(
+          `/datasets/${encodeURIComponent(datasetId)}`,
+          {
+            token,
+          },
+        );
+        setDataset(payload?.data ?? null);
+      } catch (err) {
+        console.error("[DatasetDetail] Failed to load dataset:", err);
+        if (err instanceof ApiError && err.status === 404) {
+          setError("Dataset not found");
+        } else {
+          const message =
+            err instanceof ApiError
+              ? err.message
+              : "Failed to load dataset details. Please try again later.";
+          setError(message);
+        }
+        setDataset(null);
+      } finally {
+        if (!silent) {
+          setIsLoading(false);
+        }
+      }
+    },
+    [datasetId, getAccessToken],
+  );
+
+  useEffect(() => {
+    void fetchDataset();
+  }, [fetchDataset]);
+
+  useEffect(() => {
+    const shouldPoll =
+      dataset?.uploadStatus === "pending" ||
+      dataset?.uploadStatus === "in_progress";
+
+    if (!shouldPoll) {
       return;
     }
 
-    setIsLoading(true);
-    setError(null);
+    const intervalId = window.setInterval(() => {
+      void fetchDataset({ silent: true });
+    }, 4000);
 
-    try {
-      const token = await getAccessToken();
-      if (!token) {
-        throw new Error("Missing access token");
-      }
-
-      const payload = await apiFetch<{ data?: DatasetDTO }>(
-        `/datasets/${encodeURIComponent(datasetId)}`,
-        {
-          token,
-        },
-      );
-      setDataset(payload?.data ?? null);
-    } catch (err) {
-      console.error("[DatasetDetail] Failed to load dataset:", err);
-      if (err instanceof ApiError && err.status === 404) {
-        setError("Dataset not found");
-      } else {
-        const message =
-          err instanceof ApiError
-            ? err.message
-            : "Failed to load dataset details. Please try again later.";
-        setError(message);
-      }
-      setDataset(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [datasetId, getAccessToken]);
-
-  useEffect(() => {
-    fetchDataset();
-  }, [fetchDataset]);
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [dataset?.uploadStatus, fetchDataset]);
 
   const updateStatus = useCallback(
     async (nextStatus: DatasetStatus) => {
@@ -276,7 +303,9 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
             </Link>
             <button
               type="button"
-              onClick={fetchDataset}
+              onClick={() => {
+                void fetchDataset();
+              }}
               className="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-xl transition-all"
             >
               <RefreshCw className="w-4 h-4" />
@@ -402,12 +431,14 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                   </div>
                   <div className="mt-3 h-2 bg-gray-900 rounded-full overflow-hidden">
                     <div
-                      className="h-2 bg-purple-500 rounded-full transition-all duration-500"
+                      className="h-2 bg-purple-500 rounded-full transition-all duration-500 ease-out"
                       style={{
-                        width: `${Math.min(
-                          100,
-                          Math.max(0, dataset.uploadProgress ?? 0),
-                        )}%`,
+                        width: `${
+                          Math.min(
+                            100,
+                            Math.max(0, dataset.uploadProgress ?? 0),
+                          )
+                        }%`,
                       }}
                     />
                   </div>

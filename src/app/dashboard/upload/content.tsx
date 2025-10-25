@@ -37,6 +37,7 @@ import { DATASET_STATUS, type DatasetCategory } from "@/lib/types/dataset";
 import { formatBytes } from "@/lib/mappers/dataset";
 import { UPLOAD_LIMITS } from "@/lib/constants/storage";
 import { apiFetch, ApiError } from "@/lib/api/client";
+import { containsProhibitedLanguage } from "@/lib/safety/profanity";
 import { DatasetRegistrationPanel } from "@/components/solana/DatasetRegistrationPanel";
 
 type UploadStep =
@@ -165,6 +166,7 @@ export function UploadContent() {
     description?: string;
     price?: string;
     terms?: string;
+    tags?: string;
   }>({});
 
   // Update metadata with user ID when user is available
@@ -310,11 +312,15 @@ export function UploadContent() {
       description?: string;
       price?: string;
       terms?: string;
+      tags?: string;
     } = {};
     let isValid = true;
 
     if (!metadata.title || metadata.title.trim() === "") {
       errors.title = "Title is required";
+      isValid = false;
+    } else if (containsProhibitedLanguage(metadata.title)) {
+      errors.title = "Please remove inappropriate language from the title.";
       isValid = false;
     }
 
@@ -324,6 +330,9 @@ export function UploadContent() {
     } else if (metadata.description.length < 10) {
       errors.description = "Description must be at least 10 characters";
       isValid = false;
+    } else if (containsProhibitedLanguage(metadata.description)) {
+      errors.description = "Please remove inappropriate language from the description.";
+      isValid = false;
     }
 
     if (!metadata.price) {
@@ -331,6 +340,11 @@ export function UploadContent() {
       isValid = false;
     } else if (isNaN(Number(metadata.price)) || Number(metadata.price) < 0) {
       errors.price = "Price must be a valid positive number";
+      isValid = false;
+    }
+
+    if (metadata.tags.some((tag) => containsProhibitedLanguage(tag))) {
+      errors.tags = "Please remove inappropriate language from tags.";
       isValid = false;
     }
 
@@ -752,10 +766,21 @@ export function UploadContent() {
       const value = input.value.trim();
 
       if (value && !metadata.tags.includes(value)) {
+        if (containsProhibitedLanguage(value)) {
+          setFormErrors((prev) => ({
+            ...prev,
+            tags: "Please avoid inappropriate language in tags.",
+          }));
+          return;
+        }
         setMetadata((prev) => ({
           ...prev,
           tags: [...prev.tags, value.toLowerCase()],
         }));
+        setFormErrors((prev) => {
+          const { tags, ...rest } = prev;
+          return rest;
+        });
       }
 
       input.value = "";
@@ -1095,6 +1120,10 @@ export function UploadContent() {
             <div className="max-w-2xl mx-auto">
               <div className="bg-gray-800 rounded-xl p-6 mb-8">
                 <h3 className="text-xl font-semibold mb-6">Dataset Details</h3>
+                <p className="text-sm text-gray-400 mb-6">
+                  These fields power your marketplace card and feed the discovery matching engine—clear,
+                  accurate info helps buyers find you faster.
+                </p>
 
                 <form className="space-y-6">
                   <div>
@@ -1207,6 +1236,11 @@ export function UploadContent() {
                       className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
                       placeholder="e.g. robotics, vision, automation"
                     />
+                    {formErrors.tags && (
+                      <p className="mt-1 text-xs text-red-400">
+                        {formErrors.tags}
+                      </p>
+                    )}
                     {/* Display tags as chips/pills */}
                     <div className="flex flex-wrap gap-2 mt-2">
                       {metadata.tags.map((tag) => (

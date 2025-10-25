@@ -186,7 +186,9 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
             </p>
             <p>
               <span className="text-gray-400">Rent Epoch:</span>{" "}
-              <span className="font-mono text-purple-200">{result.rentEpoch}</span>
+              <span className="font-mono text-purple-200">
+                {result.rentEpoch >= 0 ? result.rentEpoch : "—"}
+              </span>
             </p>
             <p>
               <span className="text-gray-400">Data Length:</span>{" "}

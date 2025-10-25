@@ -158,7 +158,7 @@ export function DatasetUploadSuccessModal({
             </button>
             {datasetId && (
               <a
-                href={`/datasets/${datasetId}`}
+                href={`/dashboard/dataset/${datasetId}`}
                 className="flex-1 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2.5 rounded-lg font-medium transition-colors text-center"
               >
                 View Dataset
