@@ -29,6 +29,7 @@ import { DATASET_STATUS, type DatasetStatus } from "@/lib/types/dataset";
 import DatasetCard from "@/components/shared/DatasetCard";
 import { LICENSE_METADATA } from "@/lib/types/license";
 import { apiFetch, ApiError } from "@/lib/api/client";
+import { OnChainAccountViewer } from "@/components/solana/OnChainAccountViewer";
 
 interface DatasetDetailContentProps {
   params: {
@@ -467,6 +468,9 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                     <ExternalLink className="w-4 h-4" />
                     View on Solana Explorer
                   </a>
+                  <div className="mt-6">
+                    <OnChainAccountViewer />
+                  </div>
                 </div>
               )}
 

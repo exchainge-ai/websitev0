@@ -37,6 +37,7 @@ import { DATASET_STATUS, type DatasetCategory } from "@/lib/types/dataset";
 import { formatBytes } from "@/lib/mappers/dataset";
 import { UPLOAD_LIMITS } from "@/lib/constants/storage";
 import { apiFetch, ApiError } from "@/lib/api/client";
+import { DatasetRegistrationPanel } from "@/components/solana/DatasetRegistrationPanel";
 
 type UploadStep =
   | "upload"
@@ -395,6 +396,10 @@ export function UploadContent() {
     },
     maxFiles: 1,
   });
+
+  const derivedFileSizeBytes =
+    uploadedFile?.size ?? parseSizeToBytes(metadata.size);
+  const derivedFileKey = uploadedFileKey ?? uploadedFile?.name ?? null;
 
   const startBackgroundUpload = useCallback(
     async (
@@ -1572,42 +1577,38 @@ export function UploadContent() {
 
           {/* Complete Step */}
           {step === "complete" && (
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="bg-gray-800 rounded-xl p-8 mb-8">
-                <div className="w-24 h-24 rounded-full bg-green-900/30 mx-auto mb-6 flex items-center justify-center">
-                  <CheckCircle className="w-12 h-12 text-green-500" />
+            <div className="mx-auto flex max-w-4xl flex-col gap-6">
+              <div className="rounded-xl bg-gray-800 p-8 text-center">
+                <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-green-900/30">
+                  <CheckCircle className="h-12 w-12 text-green-500" />
                 </div>
-                <h3 className="text-2xl font-semibold mb-2">
-                  Verification Complete!
-                </h3>
-                <p className="text-gray-400 mb-8">
-                  Your dataset has been successfully verified with a quality
-                  score of{" "}
-                  <span className="text-green-400 font-semibold">
-                    {verificationScore}%
-                  </span>
+                <h3 className="text-2xl font-semibold">Verification Complete!</h3>
+                <p className="mt-3 text-gray-400">
+                  Your dataset has been successfully verified with a quality score of{" "}
+                  <span className="font-semibold text-green-400">{verificationScore}%</span>
                 </p>
 
-                <div className="bg-gray-700/50 rounded-lg p-6 mb-8 max-w-lg mx-auto text-left">
-                  <h4 className="font-semibold mb-2 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-purple-400" /> AI Analysis
-                    Summary
+                <div className="mx-auto mt-8 max-w-xl rounded-lg bg-gray-700/50 p-6 text-left">
+                  <h4 className="mb-2 flex items-center gap-2 font-semibold">
+                    <Sparkles className="h-5 w-5 text-purple-400" />
+                    AI Analysis Summary
                   </h4>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Your dataset "{metadata.title}" has passed our verification
-                    checks with a quality score of {verificationScore}%. The
-                    dataset format is well-structured and the content appears to
-                    be high-quality and relevant to its category.
+                  <p className="text-sm leading-relaxed text-gray-300">
+                    Your dataset "{metadata.title}" has passed our verification checks with a quality score of{" "}
+                    {verificationScore}%. The dataset format is well-structured and the content appears to be
+                    high-quality and relevant to its category.
                   </p>
                   <div className="mt-4">
-                    <h5 className="text-sm font-medium mb-1">Status:</h5>
+                    <h5 className="mb-1 text-sm font-medium text-gray-200">Status:</h5>
                     {metadata.autoPublish && verificationScore >= 85 ? (
-                      <p className="text-green-400 font-medium flex items-center gap-1">
-                        <CheckCircle className="w-4 h-4" /> Ready for publishing
+                      <p className="flex items-center gap-1 font-medium text-green-400">
+                        <CheckCircle className="h-4 w-4" />
+                        Ready for publishing
                       </p>
                     ) : (
-                      <p className="text-yellow-400 font-medium flex items-center gap-1">
-                        <Clock className="w-4 h-4" /> Pending final review
+                      <p className="flex items-center gap-1 font-medium text-yellow-400">
+                        <Clock className="h-4 w-4" />
+                        Pending final review
                       </p>
                     )}
                   </div>
@@ -1617,16 +1618,28 @@ export function UploadContent() {
                   type="button"
                   onClick={handleComplete}
                   disabled={isSubmitting}
-                  className={`bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2 ${
+                  className={`mt-6 inline-flex items-center justify-center gap-2 rounded-lg px-8 py-3 font-semibold transition-colors ${
                     isSubmitting
-                      ? "opacity-60 cursor-not-allowed"
-                      : "hover:bg-purple-700"
+                      ? "cursor-not-allowed bg-purple-600/60 text-white"
+                      : "bg-purple-600 text-white hover:bg-purple-700"
                   }`}
                 >
-                  {isSubmitting && <Loader2 className="w-5 h-5 animate-spin" />}
+                  {isSubmitting && <Loader2 className="h-5 w-5 animate-spin" />}
                   {isSubmitting ? "Publishing..." : "Publish Dataset"}
                 </button>
               </div>
+
+              <DatasetRegistrationPanel
+                datasetId={createdDatasetId}
+                defaultFileKey={derivedFileKey}
+                defaultFileSizeBytes={
+                  derivedFileSizeBytes && derivedFileSizeBytes > 0 ? derivedFileSizeBytes : null
+                }
+                defaultDatasetHash={datasetHash}
+                onRegistered={(payload) => {
+                  console.log("[Upload] Dataset registered on-chain", payload);
+                }}
+              />
             </div>
           )}
 

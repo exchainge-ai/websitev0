@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { PrivyErrorBoundary } from "./PrivyErrorBoundary";
+import { SolanaProviders } from "./SolanaProviders";
+import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
 
 type PrivyModule = typeof import("@privy-io/react-auth");
 
@@ -13,8 +15,21 @@ export function PrivyWrapper({ children }: PrivyWrapperProps) {
   // Read env vars directly without validation
   const appId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || '';
   const clientId = process.env.NEXT_PUBLIC_PRIVY_CLIENT_ID || '';
-
   const [privyModule, setPrivyModule] = useState<PrivyModule | null>(null);
+
+  const solanaConnectors = useMemo(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+    try {
+      return toSolanaWalletConnectors({
+        shouldAutoConnect: true,
+      });
+    } catch (error) {
+      console.error("[PrivyWrapper] Failed to initialize Solana connectors", error);
+      return undefined;
+    }
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -49,15 +64,30 @@ export function PrivyWrapper({ children }: PrivyWrapperProps) {
           clientId={clientId}
           config={{
             embeddedWallets: {
-              createOnLogin: "all-users",
+              createOnLogin: "off",
             } as any,
             loginMethods: ["email", "wallet", "google", "github"],
+            externalWallets: {
+              solana: solanaConnectors
+                ? {
+                    connectors: solanaConnectors,
+                  }
+                : undefined,
+            },
             appearance: {
               theme: "dark",
               accentColor: "#8b5cf6",
               logo: "https://api.dicebear.com/7.x/shapes/svg?seed=exchainge&backgroundColor=8b5cf6",
               showWalletLoginFirst: false,
-              walletList: ["metamask", "coinbase_wallet", "rainbow"],
+              walletList: [
+                "metamask",
+                "coinbase_wallet",
+                "rainbow",
+                "detected_solana_wallets",
+                "phantom",
+                "solflare",
+                "backpack",
+              ],
               landingHeader: "Welcome to ExchAInge",
               loginMessage: "Sign in to access AI training datasets",
               walletChainType: "ethereum-and-solana",
@@ -68,12 +98,16 @@ export function PrivyWrapper({ children }: PrivyWrapperProps) {
             },
           }}
         >
-          <div suppressHydrationWarning>{children}</div>
+          <SolanaProviders>
+            <div suppressHydrationWarning>{children}</div>
+          </SolanaProviders>
         </PrivyProvider>
       );
     })()
   ) : (
-    <div suppressHydrationWarning>{children}</div>
+    <SolanaProviders>
+      <div suppressHydrationWarning>{children}</div>
+    </SolanaProviders>
   );
 
   return (

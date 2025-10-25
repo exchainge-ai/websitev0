@@ -28,3 +28,5 @@ bun run build
 - API helpers live in `src/lib/api/` and centralize calls to the backend.
 - Dataset mapping/helpers are in `src/lib/mappers/dataset.ts`; update there if the backend response changes.
 - No backend/server utilities are bundled; anything beyond fetches must be done on the API side.
+- Privy and Solana wallet providers live under `src/components/providers`, while on-chain UI hooks/components live in `src/components/solana` and `src/lib/solana/`.
+- Solana smart contract source lives separately at [exchainge-ai/exchainge-program](https://github.com/exchainge-ai/exchainge-program); reference that repo for IDL or on-chain updates.

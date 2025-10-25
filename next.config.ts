@@ -1,4 +1,9 @@
 import type { NextConfig } from "next";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
@@ -155,6 +160,16 @@ const nextConfig: NextConfig = {
         },
       };
     }
+
+    const solanaKitEntry = isServer
+      ? path.resolve(__dirname, "node_modules/@solana/kit/dist/index.node.cjs")
+      : path.resolve(__dirname, "node_modules/@solana/kit/dist/index.browser.mjs");
+
+    config.resolve = config.resolve || {};
+    config.resolve.alias = {
+      ...(config.resolve.alias || {}),
+      "@solana/kit": solanaKitEntry,
+    };
 
     if (dev && !isServer) {
       // Optimize HMR for client-side in development with more stability
