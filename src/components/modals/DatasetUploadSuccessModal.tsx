@@ -2,6 +2,7 @@
 
 import { CheckCircle, X, Shield, Copy, ExternalLink, Clock, Database, Hash, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
+import { usePrivy } from "@privy-io/react-auth";
 import { apiFetch } from "@/lib/api/client";
 
 interface DatasetUploadSuccessModalProps {
@@ -26,6 +27,7 @@ export function DatasetUploadSuccessModal({
   blockchainNetwork = 'mainnet-beta',
   blockchainTimestamp: initialBlockchainTimestamp,
 }: DatasetUploadSuccessModalProps) {
+  const { getAccessToken } = usePrivy();
   const [copiedId, setCopiedId] = useState(false);
   const [copiedTx, setCopiedTx] = useState(false);
 
@@ -64,13 +66,16 @@ export function DatasetUploadSuccessModal({
       pollCount++;
 
       try {
+        const token = await getAccessToken();
         const response = await apiFetch<{
           data?: {
             blockchainTxHash?: string;
             blockchainExplorerUrl?: string;
             blockchainTimestamp?: string;
           };
-        }>(`/datasets/${datasetId}`);
+        }>(`/datasets/${datasetId}`, {
+          token: token || undefined,
+        });
 
         if (response?.data?.blockchainTxHash) {
           setBlockchainTxHash(response.data.blockchainTxHash);
