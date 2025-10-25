@@ -9,7 +9,7 @@ Exchainge Frontend
 - Bun v1.1+ (or Node 20+ if you prefer `npm` / `pnpm`)
 - Copy `.env.template` → `.env.local` and provide real values.
   - Required: `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_PRIVY_APP_ID`, `NEXT_PUBLIC_PRIVY_CLIENT_ID`
-  - Optional: `NEXT_PUBLIC_SOLANA_RPC_URL`, `NEXT_PUBLIC_SUPABASE_*`
+  - Optional: `NEXT_PUBLIC_SOLANA_RPC_URL`
 
 ## Install & Develop
 ```bash
