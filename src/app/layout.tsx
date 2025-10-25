@@ -5,6 +5,7 @@ import Navigation from "@/components/layout/Navigation";
 import { Providers } from "./providers";
 import "@/lib/console-override";
 import { WebVitalsReporter } from "@/lib/web-vitals";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata: Metadata = {
   title: "ExchAInge - Physical AI Data Marketplace",
@@ -32,6 +33,7 @@ export default function RootLayout({
       >
         <Providers>
           <WebVitalsReporter />
+          <Analytics />
           <div className="relative flex min-h-screen flex-col">
             <Navigation />
             <main className="flex-1 pt-16">{children}</main>

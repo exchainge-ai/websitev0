@@ -117,34 +117,27 @@ const nextConfig: NextConfig = {
     position: "bottom-right",
   },
 
-  // Configure webpack for better HMR stability in monorepo
   webpack: (config, { dev, isServer }) => {
-    // Performance optimizations for both dev and production
     if (!isServer) {
-      // Enable SWC minification which is faster than Terser
       config.optimization = {
         ...config.optimization,
         minimize: !dev,
         moduleIds: "deterministic",
-        // Split chunks for better caching
         splitChunks: {
           chunks: "all",
           cacheGroups: {
-            // Create a separate chunk for react components
             react: {
               test: /[\\/]node_modules[\\/](react|react-dom|scheduler)[\\/]/,
               name: "react",
               chunks: "all",
               priority: 40,
             },
-            // Group privy components together
             privy: {
               test: /[\\/]node_modules[\\/]@privy-io[\\/]/,
               name: "privy",
               chunks: "all",
               priority: 30,
             },
-            // Group other large dependencies
             commons: {
               test: /[\\/]node_modules[\\/]/,
               name: "commons",
