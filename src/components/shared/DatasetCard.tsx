@@ -3,7 +3,6 @@ import {
   Calendar,
   CheckCircle,
   Clock,
-  DollarSign,
   Download,
   FileText,
   Star,
@@ -110,13 +109,18 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
 
       sizeTag: `text-xs ${isUserUploaded ? "bg-[#6DF77E]/10 text-[#6DF77E] border border-[#6DF77E]/30" : "bg-blue-900/30 text-blue-300 border border-blue-500/30"} px-2 py-1 rounded font-semibold`,
 
-      actionButton: `${isUserUploaded ? "bg-[#6DF77E] hover:bg-[#04C61B] border border-[#6DF77E] text-[#0C2B31]" : "bg-blue-600 hover:bg-blue-700 border border-blue-600 text-white"} px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg`,
+      actionButton: `${isUserUploaded ? "bg-[#6DF77E] text-[#03241f]" : "bg-[#6DF77E] text-[#03241f]"} inline-flex items-center justify-center gap-2 rounded-lg border border-[#6DF77E]/20 px-4 py-2 text-sm font-semibold transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#04C61B] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#04C61B] shadow-[0_14px_30px_-20px_rgba(99,247,125,0.9)]`,
 
       tags: isUserUploaded
         ? "bg-[#6DF77E]/10 text-[#6DF77E] px-2 py-1 rounded-lg text-xs border border-[#6DF77E]/30 font-medium"
         : "bg-blue-900/30 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30 font-medium",
     };
   }, [dataset.isUserUploaded]);
+
+  const displayPrice = useMemo(() => {
+    if (!dataset.price) return "";
+    return dataset.price.replace(/^\s*\$/, "").trim();
+  }, [dataset.price]);
 
   return (
     <div
@@ -248,16 +252,16 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
 
         {/* Price and Purchase/Manage Button */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-700 mt-auto">
-          <div className="flex items-center gap-1">
-            <DollarSign className="w-5 h-5 text-green-400" />
-            <span className="text-2xl font-bold text-green-400">
-              {dataset.price}
-            </span>
-          </div>
-          {dataset.isUserUploaded && !dataset.isMarketplaceOnly ? (
-            <button
-              type="button"
-              onClick={() => {
+        <div className="flex items-baseline gap-1 text-green-400">
+          <span className="text-sm font-semibold">$</span>
+          <span className="text-2xl font-bold tracking-tight">
+            {displayPrice}
+          </span>
+        </div>
+        {dataset.isUserUploaded && !dataset.isMarketplaceOnly ? (
+          <button
+            type="button"
+            onClick={() => {
                 const datasetId = encodeURIComponent(dataset.id);
 
                 // Use router.push for better navigation handling
