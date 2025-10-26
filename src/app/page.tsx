@@ -5,8 +5,6 @@ import {
   Brain,
   Check,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   Cpu,
   Database,
   Globe,
@@ -14,6 +12,7 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
@@ -24,37 +23,9 @@ import {
 
 export default function Home() {
   const router = useRouter();
-  const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState<Record<string, boolean>>({});
-  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  const teamMembers = [
-    {
-      name: "Marc Ryan",
-      role: "Co-Founder & CEO",
-      expertise: "Blockchain Development",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=MarcRyan",
-    },
-    {
-      name: "Luca Trevisani",
-      role: "Co-Founder & CSO",
-      expertise: "Crypto-Native Strategy",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=LucaTrevisani",
-    },
-    {
-      name: "Milind Choudhary",
-      role: "CTO & Head of AI",
-      expertise: "AI & Robotics Research",
-      image: "https://api.dicebear.com/7.x/avataaars/svg?seed=MilindChoudhary",
-    },
-  ];
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-
-    window.addEventListener("scroll", handleScroll);
-
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -72,7 +43,6 @@ export default function Home() {
     }
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
       observer.disconnect();
     };
   }, []);
@@ -86,41 +56,13 @@ export default function Home() {
     router.push("/marketplace");
   };
 
-  const nextTeamMember = () => {
-    if (isTransitioning || currentTeamIndex >= teamMembers.length - 3) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentTeamIndex((prev) => prev + 1);
-      setIsTransitioning(false);
-    }, 150);
-  };
-
-  const prevTeamMember = () => {
-    if (isTransitioning || currentTeamIndex <= 0) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrentTeamIndex((prev) => prev - 1);
-      setIsTransitioning(false);
-    }, 150);
-  };
-
-  const getVisibleMembers = () => {
-    const members = [];
-    for (let i = 0; i < 3; i++) {
-      const index = currentTeamIndex + i;
-      if (index < teamMembers.length) {
-        members.push(teamMembers[index]);
-      }
-    }
-    return members;
-  };
-
   return (
-    <div className="min-h-screen bg-gray-900 text-white overflow-x-hidden">
+    <div className="min-h-screen overflow-x-hidden bg-gray-950 text-white">
       {/* Gradient Background */}
-      <div className="fixed inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-blue-900/20 to-purple-900/20"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-700/20 via-transparent to-transparent"></div>
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-950 via-gray-900/80 to-gray-900/60" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-brand-green/20 via-transparent to-transparent" />
+        <div className="absolute inset-y-0 right-0 w-2/3 bg-[radial-gradient(circle_at_top,_rgba(31,185,196,0.2),transparent_70%)] blur-3xl" />
       </div>
 
       {/* Hero Section - Optimized for faster LCP */}
@@ -138,24 +80,22 @@ export default function Home() {
             </PriorityHeading>
             <PriorityText
               id="hero-main-text"
-              className="text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto mb-12 leading-relaxed min-h-[6rem]"
+              className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-12 leading-relaxed"
               priority={true}
             >
-              Build better AI with real-world robotics data you can trust.
-              Collect from your hardware, earn from your data, and help advance
-              the future of AI together.
+              The marketplace for verified physical AI datasets. Monetize your robotics data or find exactly what you need to train better models.
             </PriorityText>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
               <button
                 onClick={launchMarketplace}
                 type="button"
-                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                className="rounded-xl bg-brand-green px-8 py-4 text-lg font-semibold text-primary-foreground transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-green-strong hover:shadow-[0_28px_60px_-28px_rgba(99,247,125,0.85)]"
               >
                 Explore Datasets
               </button>
               <button
                 type="button"
-                className="border border-gray-600 text-gray-300 px-8 py-4 rounded-lg text-lg font-semibold hover:border-gray-500 hover:bg-gray-800 transition-all duration-300"
+                className="rounded-xl border border-gray-700/70 px-8 py-4 text-lg font-semibold text-gray-200 transition-all duration-300 hover:bg-white/10 hover:text-white"
               >
                 Watch Demo
               </button>
@@ -165,17 +105,18 @@ export default function Home() {
             <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">5,000+</div>
-                <div className="text-gray-400">Datasets</div>
+                <div className="text-gray-400 text-sm">Datasets</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">25K+</div>
-                <div className="text-gray-400">Researchers</div>
+                <div className="text-gray-400 text-sm">Researchers</div>
               </div>
               <div className="text-center">
                 <div className="text-3xl font-bold text-white">500K+</div>
-                <div className="text-gray-400">Downloads</div>
+                <div className="text-gray-400 text-sm">Downloads</div>
               </div>
             </div>
+            <p className="text-xs text-gray-500 text-center mt-6 italic">* Projected marketplace capacity</p>
           </div>
         </div>
 
@@ -222,7 +163,7 @@ export default function Home() {
                 title: "Easy & Transparent",
                 description:
                   "Simple upload process, clear pricing, no hidden fees. Know exactly what you're getting before you buy.",
-                color: "purple",
+                color: "green",
               },
               {
                 icon: Zap,
@@ -280,7 +221,7 @@ export default function Home() {
                 },
               ].map((item) => (
                 <div key={item.label} className="text-center">
-                  <div className="text-3xl font-bold text-blue-400 mb-2">
+                  <div className="text-3xl font-bold text-brand-green mb-2">
                     {item.metric}
                   </div>
                   <div className="font-semibold text-white mb-1">{item.label}</div>
@@ -323,7 +264,7 @@ export default function Home() {
                   "Track your earnings in real-time",
                 ].map((benefit, index) => (
                   <div key={benefit} className="flex items-center">
-                    <Check className="w-5 h-5 text-green-400 mr-3" />
+                    <Check className="w-5 h-5 text-brand-green mr-3" />
                     <span className="text-gray-300">{benefit}</span>
                   </div>
                 ))}
@@ -331,15 +272,15 @@ export default function Home() {
               <button
                 onClick={launchMarketplace}
                 type="button"
-                className="mt-8 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center"
+                className="mt-8 bg-brand-green text-primary-foreground px-6 py-3 rounded-lg hover:bg-brand-green-strong transition-colors inline-flex items-center font-semibold"
               >
                 Explore Datasets
                 <ArrowRight className="w-4 h-4 ml-2" />
               </button>
             </div>
             <div className="bg-gradient-to-br from-gray-800/80 to-gray-700/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-600 overflow-hidden">
-              <div className="w-full h-48 bg-gradient-to-br from-blue-600/30 to-purple-600/30 rounded-lg mb-4 flex items-center justify-center">
-                <Database className="w-16 h-16 text-blue-400" />
+              <div className="w-full h-48 bg-gradient-to-br from-brand-green/20 to-gray-900/40 rounded-lg mb-4 flex items-center justify-center">
+                <Database className="w-16 h-16 text-brand-green" />
               </div>
               <p className="text-sm text-gray-300">Real robotics hardware and sensor data from physical systems</p>
             </div>
@@ -359,14 +300,14 @@ export default function Home() {
                   "Support the researchers who collected the data",
                 ].map((benefit, index) => (
                   <div key={benefit} className="flex items-center">
-                    <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0" />
+                    <Check className="w-5 h-5 text-brand-green mr-3 flex-shrink-0" />
                     <span className="text-gray-300">{benefit}</span>
                   </div>
                 ))}
               </div>
               <div className="bg-gray-800/50 rounded-lg overflow-hidden border border-gray-700 flex items-center justify-center h-64">
-                <div className="bg-gradient-to-br from-purple-600/30 to-blue-600/30 w-full h-full flex items-center justify-center">
-                  <Brain className="w-20 h-20 text-purple-400" />
+                <div className="bg-gradient-to-br from-brand-green/20 to-gray-900/40 w-full h-full flex items-center justify-center">
+                  <Brain className="w-20 h-20 text-brand-green" />
                 </div>
               </div>
             </div>
@@ -387,8 +328,11 @@ export default function Home() {
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
               Featured Datasets
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Real examples of the high-quality datasets available in our marketplace. Used by leading AI researchers and companies.
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto mb-4">
+              Example datasets showing the types of data available on our platform.
+            </p>
+            <p className="text-sm text-gray-400 italic">
+              * Examples shown are for demonstration purposes only
             </p>
           </div>
 
@@ -431,7 +375,7 @@ export default function Home() {
                     <div className="inline-block bg-blue-500/20 text-blue-300 text-xs font-semibold px-3 py-1 rounded-full mb-2">
                       {dataset.category}
                     </div>
-                    <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">
+                    <h3 className="text-xl font-bold text-white group-hover:text-brand-green transition-colors">
                       {dataset.title}
                     </h3>
                   </div>
@@ -445,11 +389,11 @@ export default function Home() {
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 uppercase tracking-wider">Quality</div>
-                    <div className="font-semibold text-green-400">{dataset.quality}%</div>
+                    <div className="font-semibold text-brand-green">{dataset.quality}%</div>
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 uppercase tracking-wider">Downloads</div>
-                    <div className="font-semibold text-blue-400">{dataset.downloads}</div>
+                    <div className="font-semibold text-brand-green">{dataset.downloads}</div>
                   </div>
                 </div>
 
@@ -460,7 +404,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={launchMarketplace}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-all inline-flex items-center justify-center group/btn"
+                  className="w-full bg-brand-green hover:bg-brand-green-strong text-primary-foreground font-semibold py-2 px-4 rounded-lg transition-all inline-flex items-center justify-center group/btn"
                 >
                   View Dataset
                   <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-1 transition-transform" />
@@ -476,7 +420,7 @@ export default function Home() {
             <button
               onClick={launchMarketplace}
               type="button"
-              className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+              className="inline-flex items-center bg-brand-green text-primary-foreground px-6 py-3 rounded-lg hover:bg-brand-green-strong transition-colors font-semibold"
             >
               Explore All Datasets
               <ArrowRight className="w-4 h-4 ml-2" />
@@ -485,104 +429,20 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Team Carousel Section */}
-      <section
-        id="about"
-        data-animate
-        className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800/90 backdrop-blur-sm relative z-10"
-      >
-        <div
-          className={`max-w-7xl mx-auto transition-all duration-1000 ${isVisible.about ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
-        >
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Built by a Team You Can Trust
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Experienced builders in AI, robotics, and blockchain working to make data collection simple and profitable.
-            </p>
-          </div>
-
-          {/* Team Carousel */}
-          <div className="relative max-w-4xl mx-auto">
-            <div className="flex items-center justify-center">
-              <button
-                type="button"
-                onClick={prevTeamMember}
-                className={`absolute left-0 z-10 bg-gray-700/80 hover:bg-gray-600/80 shadow-lg rounded-full p-2 transition-all duration-300 backdrop-blur-sm ${
-                  currentTeamIndex <= 0
-                    ? "opacity-50 cursor-not-allowed"
-                    : "opacity-100"
-                }`}
-                disabled={isTransitioning || currentTeamIndex <= 0}
-              >
-                <ChevronLeft className="w-6 h-6 text-gray-300" />
-              </button>
-
-              <div className="overflow-hidden mx-16">
-                <div
-                  className={`grid md:grid-cols-3 gap-8 transition-all duration-300 ease-in-out transform ${
-                    isTransitioning
-                      ? "opacity-0 translate-x-4"
-                      : "opacity-100 translate-x-0"
-                  }`}
-                >
-                  {getVisibleMembers().map((member, index) => (
-                    <div
-                      key={`${member.name}-${currentTeamIndex}-${index}`}
-                      className="bg-gray-700/80 backdrop-blur-sm p-6 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 text-center border border-gray-600"
-                    >
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                      />
-                      <h3 className="text-xl font-semibold text-white mb-2">
-                        {member.name}
-                      </h3>
-                      <p className="text-blue-400 font-medium mb-2">
-                        {member.role}
-                      </p>
-                      <p className="text-gray-300 text-sm">
-                        {member.expertise}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={nextTeamMember}
-                className={`absolute right-0 z-10 bg-gray-700/80 hover:bg-gray-600/80 shadow-lg rounded-full p-2 transition-all duration-300 backdrop-blur-sm ${
-                  currentTeamIndex >= teamMembers.length - 3
-                    ? "opacity-50 cursor-not-allowed"
-                    : "opacity-100"
-                }`}
-                disabled={
-                  isTransitioning || currentTeamIndex >= teamMembers.length - 3
-                }
-              >
-                <ChevronRight className="w-6 h-6 text-gray-300" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600/90 to-purple-600/90 backdrop-blur-sm relative z-10">
-        <div className="max-w-4xl mx-auto text-center text-white">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-brand-green/90 to-brand-green-strong/90 backdrop-blur-sm relative z-10">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-primary-foreground">
             Ready to Get Started?
           </h2>
-          <p className="text-xl mb-8 opacity-90">
+          <p className="text-xl mb-8 text-gray-900">
             Join the community of data collectors and AI builders making real progress.
           </p>
           <button
             onClick={launchMarketplace}
             type="button"
-            className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="bg-gray-900 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-900 transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             Get Started Today
           </button>
@@ -609,7 +469,7 @@ export default function Home() {
                 description: "No upfront costs",
                 features: [
                   "Free dataset uploads",
-                  "70% revenue share on sales",
+                  "95% revenue share on sales",
                   "Instant payments",
                   "No listing fees",
                 ],
@@ -644,14 +504,14 @@ export default function Home() {
                 <h3 className="text-2xl font-bold text-white mb-2">
                   {tier.title}
                 </h3>
-                <p className="text-3xl font-bold text-blue-400 mb-1">
+                <p className="text-3xl font-bold text-brand-green mb-1">
                   {tier.price}
                 </p>
                 <p className="text-gray-400 mb-6">{tier.description}</p>
                 <ul className="space-y-3">
                   {tier.features.map((feature) => (
                     <li key={feature} className="flex items-center text-gray-300">
-                      <Check className="w-4 h-4 text-green-400 mr-3 flex-shrink-0" />
+                      <Check className="w-4 h-4 text-brand-green mr-3 flex-shrink-0" />
                       {feature}
                     </li>
                   ))}
@@ -662,86 +522,96 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Resources & Support Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-800/90 backdrop-blur-sm relative z-10">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-              Everything You Need to Get Started
+      {/* Audience Paths Section */}
+      <section className="relative z-10 bg-gray-800/90 py-20 px-4 sm:px-6 lg:px-8 backdrop-blur-sm">
+        <div className="mx-auto max-w-6xl">
+          <div className="mb-16 text-center">
+            <h2 className="text-4xl font-bold text-white md:text-5xl">
+              Built for AI teams at every stage
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Complete documentation, integration guides, and dedicated support for engineers and teams.
+            <p className="mx-auto max-w-3xl text-xl text-gray-300">
+              Choose the track that matches your goals—whether you&apos;re sourcing production data, validating research, or shipping features fast.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6 max-w-6xl mx-auto mb-12">
+          <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                icon: Database,
-                title: "API Documentation",
-                description: "REST APIs, webhooks, and SDKs. Get started in minutes.",
-                color: "blue",
-              },
-              {
-                icon: Brain,
-                title: "Integration Guides",
-                description: "TensorFlow, PyTorch, Hugging Face. Ready-to-use examples.",
-                color: "purple",
-              },
-              {
-                icon: Cpu,
-                title: "Code Examples",
-                description: "Python, JavaScript, Go samples. Copy-paste ready.",
-                color: "cyan",
-              },
-              {
+                title: "AI Companies",
                 icon: Rocket,
-                title: "Support Center",
-                description: "FAQ, guides, and community forum. 24/7 availability.",
-                color: "green",
+                description: "Secure a custom pipeline of robotics and sensor data with clear licensing.",
+                bullets: [
+                  "Private data rooms with enterprise access controls",
+                  "Dedicated sourcing support for fleet deployments",
+                  "Compliance-ready audit trails for every asset",
+                ],
+                ctaLabel: "Talk to us",
+                ctaHref: "/request",
               },
-            ].map((resource) => (
-              <a
-                key={resource.title}
-                href="#"
-                className="bg-gray-700/50 backdrop-blur-sm p-6 rounded-xl border border-gray-600 hover:border-blue-500/50 transition-all group cursor-pointer"
+              {
+                title: "Research Labs",
+                icon: Brain,
+                description: "Access curated field data for experimentation and publication.",
+                bullets: [
+                  "Verified capture from partner hardware programs",
+                  "Usage analytics for citations and reproducibility",
+                  "Flexible licensing for academic collaborations",
+                ],
+                ctaLabel: "Explore marketplace",
+                ctaHref: "/marketplace",
+              },
+              {
+                title: "Engineers & Builders",
+                icon: Cpu,
+                description: "Integrate physical AI data into products with a single SDK.",
+                bullets: [
+                  "REST and streaming endpoints with rapid auth",
+                  "Sandbox datasets for prototyping and demos",
+                  "Python, TypeScript, and Rust starter kits",
+                ],
+                ctaLabel: "Read the docs",
+                ctaHref: "/docs",
+              },
+            ].map((persona) => (
+              <div
+                key={persona.title}
+                className="flex flex-col gap-4 rounded-2xl border border-gray-700 bg-gray-800/60 p-6 transition-all hover:border-brand-green/50"
               >
-                <div
-                  className={`w-10 h-10 bg-${resource.color}-900/50 rounded-lg flex items-center justify-center mb-4 group-hover:bg-${resource.color}-800 transition-all`}
-                >
-                  <resource.icon className={`w-5 h-5 text-${resource.color}-400`} />
+                <div className="flex items-center gap-3">
+                  <persona.icon className="h-6 w-6 text-brand-green" />
+                  <h3 className="text-xl font-semibold text-white">{persona.title}</h3>
                 </div>
-                <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-blue-400 transition-colors">
-                  {resource.title}
-                </h3>
-                <p className="text-gray-400 text-sm">{resource.description}</p>
-              </a>
+                <p className="text-sm text-gray-300">{persona.description}</p>
+                <ul className="flex-1 space-y-2 text-sm text-gray-400">
+                  {persona.bullets.map((bullet) => (
+                    <li key={bullet} className="flex items-start gap-2">
+                      <Check className="mt-0.5 h-4 w-4 text-brand-green" />
+                      <span>{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  href={persona.ctaHref}
+                  className="mt-4 inline-flex items-center justify-center rounded-lg bg-brand-green px-4 py-2 text-sm font-semibold text-[#03241f] transition-all hover:-translate-y-0.5 hover:bg-brand-green-strong"
+                >
+                  {persona.ctaLabel}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </div>
             ))}
           </div>
 
-          {/* Quick Integration Examples */}
-          <div className="bg-gradient-to-r from-gray-700/30 to-gray-800/30 backdrop-blur-sm border border-gray-600 rounded-xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-6">Quick Integration Example</h3>
-            <div className="bg-gray-900/50 rounded-lg p-4 font-mono text-sm text-green-400 overflow-x-auto">
-              <pre>{`# Download a dataset with Python
-from marketplace_sdk import DatasetClient
-
-client = DatasetClient(api_key="your-api-key")
-dataset = client.download("mobile-robot-navigation-v1")
-
-# Load into PyTorch
-import torch
-from torch.utils.data import DataLoader
-
-train_loader = DataLoader(
-  dataset.to_torch_dataset(),
-  batch_size=32
-)`}</pre>
-            </div>
-            <p className="text-gray-400 text-sm mt-4">
-              See our full <a href="#" className="text-blue-400 hover:text-blue-300 font-semibold">integration guide</a> for TensorFlow, Hugging Face, and more.
-            </p>
-          </div>
+          <p className="mt-10 text-center text-sm text-gray-500">
+            Want the full breakdown? Dive into our{" "}
+            <Link href="/docs" className="font-semibold text-brand-green hover:text-brand-green-light">
+              documentation hub
+            </Link>{" "}
+            or{" "}
+            <Link href="/request" className="font-semibold text-brand-green hover:text-brand-green-light">
+              schedule a strategy call
+            </Link>
+            .
+          </p>
         </div>
       </section>
 
@@ -806,14 +676,14 @@ train_loader = DataLoader(
               >
                 <div className="flex items-center mb-6">
                   <div className="w-12 h-12 bg-blue-900/30 rounded-lg flex items-center justify-center mr-4">
-                    <useCase.icon className="w-6 h-6 text-blue-400" />
+                    <useCase.icon className="w-6 h-6 text-brand-green" />
                   </div>
                   <h3 className="text-2xl font-bold text-white">{useCase.title}</h3>
                 </div>
                 <ul className="space-y-3">
                   {useCase.applications.map((app) => (
                     <li key={app} className="flex items-start">
-                      <Check className="w-5 h-5 text-green-400 mr-3 flex-shrink-0 mt-0.5" />
+                      <Check className="w-5 h-5 text-brand-green mr-3 flex-shrink-0 mt-0.5" />
                       <span className="text-gray-300">{app}</span>
                     </li>
                   ))}
@@ -822,7 +692,7 @@ train_loader = DataLoader(
             ))}
           </div>
 
-          <div className="mt-12 bg-gradient-to-r from-blue-600/20 to-purple-600/20 backdrop-blur-sm p-8 rounded-xl border border-blue-500/30 max-w-4xl mx-auto">
+          <div className="mt-12 bg-gradient-to-r from-brand-green/20 to-brand-green-strong/20 backdrop-blur-sm p-8 rounded-xl border border-brand-green/30 max-w-4xl mx-auto">
             <div className="text-center">
               <h3 className="text-2xl font-bold text-white mb-3">
                 Have a specific use case in mind?
@@ -832,7 +702,7 @@ train_loader = DataLoader(
               </p>
               <button
                 type="button"
-                className="inline-flex items-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors font-semibold"
+                className="inline-flex items-center bg-brand-green text-primary-foreground px-6 py-3 rounded-lg hover:bg-brand-green-strong transition-colors font-semibold"
               >
                 Contact Our Team
                 <ArrowRight className="w-4 h-4 ml-2" />

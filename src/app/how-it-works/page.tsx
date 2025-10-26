@@ -38,7 +38,7 @@ export default function HowItWorksPage() {
         "Transparent verification process",
         "Built-in trust from day one",
       ],
-      gradient: "from-purple-500 to-pink-500",
+      gradient: "from-brand-green-light to-pink-500",
     },
     {
       phase: "List",
@@ -230,7 +230,7 @@ export default function HowItWorksPage() {
                 title: "Transparent Pricing",
                 desc: "No hidden fees. You see exactly what you'll earn before you upload anything.",
                 icon: CreditCard,
-                color: "purple",
+                color: "green",
               },
             ].map((item) => (
               <motion.div
@@ -252,7 +252,7 @@ export default function HowItWorksPage() {
       {/* CTA Section */}
       <div className="container mx-auto px-4 py-24">
         <motion.div
-          className="max-w-4xl mx-auto text-center bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-3xl p-12"
+          className="max-w-4xl mx-auto text-center bg-gradient-to-br from-blue-500/10 to-brand-green-light/10 border border-blue-500/20 rounded-3xl p-12"
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -266,7 +266,7 @@ export default function HowItWorksPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
               href="/marketplace"
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-xl font-semibold text-white transition-all"
+              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-brand-green-light hover:from-blue-600 hover:to-brand-green-strong rounded-xl font-semibold text-white transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

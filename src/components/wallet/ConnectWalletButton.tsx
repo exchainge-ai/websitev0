@@ -98,7 +98,7 @@ export function ConnectWalletButton() {
       <button
         type="button"
         onClick={handleConnect}
-        className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-purple-700"
+        className="inline-flex items-center gap-2 rounded-lg bg-brand-green-light px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-green-strong"
         disabled={connecting}
       >
         {connecting ? (
@@ -118,7 +118,7 @@ export function ConnectWalletButton() {
           <select
             value={selectedWalletName}
             onChange={handleSelectChange}
-            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-xs text-white focus:border-purple-500 focus:outline-none"
+            className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-xs text-white focus:border-brand-green-light focus:outline-none"
           >
             {walletOptions.map(({ name, readyState }) => (
               <option key={name} value={name}>
@@ -135,7 +135,7 @@ export function ConnectWalletButton() {
         <button
           type="button"
           onClick={handleConnect}
-          className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-purple-700"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-green-light px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-brand-green-strong"
           disabled={connecting}
         >
           {connecting ? (
@@ -156,7 +156,7 @@ export function ConnectWalletButton() {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="rounded-lg bg-gray-900 px-3 py-2 text-xs text-purple-300">
+      <div className="rounded-lg bg-gray-900 px-3 py-2 text-xs text-brand-green-light/60">
         {wallet.adapter.name}: {addressLabel}
       </div>
       <button

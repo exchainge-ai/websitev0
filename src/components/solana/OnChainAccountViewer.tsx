@@ -107,7 +107,7 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
   }, [normalizedAccountAddress]);
 
   return (
-    <div className="space-y-4 rounded-2xl border border-purple-500/20 bg-gray-900/70 p-5">
+    <div className="space-y-4 rounded-2xl border border-brand-green-light/20 bg-gray-900/70 p-5">
       <div className="flex items-center justify-between gap-3">
         <div>
           <h3 className="text-sm font-semibold text-white">On-Chain Registry Lookup</h3>
@@ -119,7 +119,7 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
           type="button"
           onClick={() => void fetchAccount()}
           disabled={isFetching}
-          className="inline-flex items-center gap-2 rounded-lg bg-purple-600 px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-purple-600/60"
+          className="inline-flex items-center gap-2 rounded-lg bg-brand-green-light px-3 py-2 text-xs font-semibold text-white transition-colors hover:bg-brand-green-strong disabled:cursor-not-allowed disabled:bg-brand-green-light/60"
         >
           {isFetching ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -147,7 +147,7 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
           type="button"
           onClick={() => void fetchAccount()}
           disabled={isFetching}
-          className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-purple-500/40 px-3 py-2 text-xs font-semibold text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-100 md:mt-6"
+          className="mt-2 inline-flex items-center justify-center gap-2 rounded-lg border border-brand-green-light/40 px-3 py-2 text-xs font-semibold text-brand-green-light/80 transition-colors hover:border-brand-green-light hover:text-brand-green-light md:mt-6"
         >
           {isFetching ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -172,50 +172,50 @@ export function OnChainAccountViewer({ defaultAccount }: OnChainAccountViewerPro
           <div className="grid gap-2 md:grid-cols-2">
             <p>
               <span className="text-gray-400">Lamports:</span>{" "}
-              <span className="font-mono text-purple-200">{result.lamports.toLocaleString()}</span>
+              <span className="font-mono text-brand-green-light/80">{result.lamports.toLocaleString()}</span>
             </p>
             <p>
               <span className="text-gray-400">Owner:</span>{" "}
-              <span className="font-mono text-purple-200">{result.owner}</span>
+              <span className="font-mono text-brand-green-light/80">{result.owner}</span>
             </p>
             <p>
               <span className="text-gray-400">Executable:</span>{" "}
-              <span className="font-mono text-purple-200">
+              <span className="font-mono text-brand-green-light/80">
                 {result.executable ? "Yes" : "No"}
               </span>
             </p>
             <p>
               <span className="text-gray-400">Rent Epoch:</span>{" "}
-              <span className="font-mono text-purple-200">
+              <span className="font-mono text-brand-green-light/80">
                 {result.rentEpoch >= 0 ? result.rentEpoch : "—"}
               </span>
             </p>
             <p>
               <span className="text-gray-400">Data Length:</span>{" "}
-              <span className="font-mono text-purple-200">{result.data.length} bytes</span>
+              <span className="font-mono text-brand-green-light/80">{result.data.length} bytes</span>
             </p>
             {lastFetchedSlot != null && (
               <p>
                 <span className="text-gray-400">Fetched at slot:</span>{" "}
-                <span className="font-mono text-purple-200">{lastFetchedSlot}</span>
+                <span className="font-mono text-brand-green-light/80">{lastFetchedSlot}</span>
               </p>
             )}
           </div>
 
           <div className="space-y-2">
             <details className="rounded-lg border border-gray-800 bg-gray-950/80 px-3 py-2">
-              <summary className="cursor-pointer text-xs font-medium text-purple-200">
+              <summary className="cursor-pointer text-xs font-medium text-brand-green-light/80">
                 View Base64 Data
               </summary>
-              <pre className="mt-2 max-h-64 overflow-auto rounded bg-black/40 p-3 text-[10px] text-purple-200">
+              <pre className="mt-2 max-h-64 overflow-auto rounded bg-black/40 p-3 text-[10px] text-brand-green-light/80">
 {slicePreview(toBase64(result.data), 1200) ?? "No data"}
               </pre>
             </details>
             <details className="rounded-lg border border-gray-800 bg-gray-950/80 px-3 py-2">
-              <summary className="cursor-pointer text-xs font-medium text-purple-200">
+              <summary className="cursor-pointer text-xs font-medium text-brand-green-light/80">
                 View Hex Data
               </summary>
-              <pre className="mt-2 max-h-64 overflow-auto rounded bg-black/40 p-3 text-[10px] text-purple-200">
+              <pre className="mt-2 max-h-64 overflow-auto rounded bg-black/40 p-3 text-[10px] text-brand-green-light/80">
 {slicePreview(toHex(result.data), 1200) ?? "No data"}
               </pre>
             </details>

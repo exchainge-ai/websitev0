@@ -42,7 +42,7 @@ export function SuccessModal({
 
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50">
-      <div className="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 border border-purple-500/20 shadow-2xl">
+      <div className="bg-gray-800 rounded-xl p-6 max-w-md w-full mx-4 border border-brand-green-light/20 shadow-2xl">
         <div className="flex justify-end">
           <button
             onClick={onClose}
@@ -70,7 +70,7 @@ export function SuccessModal({
         <div className="mt-6 flex justify-center">
           <button
             onClick={onClose}
-            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-2 rounded-lg font-semibold transition-colors"
+            className="bg-brand-green-light hover:bg-brand-green-strong text-white px-8 py-2 rounded-lg font-semibold transition-colors"
           >
             Got it
           </button>

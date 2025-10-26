@@ -95,25 +95,25 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
 
     return {
       cardStyle: isUserUploaded
-        ? "border-2 border-purple-500/40 hover:border-purple-500/60 relative ring-2 ring-purple-500/20 hover:ring-purple-500/40"
+        ? "border-2 border-[#6DF77E]/40 hover:border-[#6DF77E]/60 relative ring-2 ring-[#6DF77E]/20 hover:ring-[#6DF77E]/40"
         : "border border-gray-700 hover:border-blue-500",
 
-      accentColor: isUserUploaded ? "purple" : "blue",
-      buttonColor: isUserUploaded ? "purple" : "blue",
+      accentColor: isUserUploaded ? "green" : "blue",
+      buttonColor: isUserUploaded ? "green" : "blue",
 
       // Pre-computed classnames for frequently used elements
-      categoryBadge: `bg-gray-900/80 ${isUserUploaded ? "text-purple-300" : "text-blue-300"} px-3 py-1 rounded-full text-sm font-semibold ${isUserUploaded ? "border border-purple-500/30" : "border border-blue-500/30"} shadow-sm backdrop-blur-sm`,
+      categoryBadge: `bg-gray-900/80 ${isUserUploaded ? "text-[#6DF77E]" : "text-blue-300"} px-3 py-1 rounded-full text-sm font-semibold ${isUserUploaded ? "border border-[#6DF77E]/30" : "border border-blue-500/30"} shadow-sm backdrop-blur-sm`,
 
-      downloadIcon: `w-4 h-4 ${isUserUploaded ? "text-purple-400" : "text-blue-400"}`,
-      fileTextIcon: `w-4 h-4 ${isUserUploaded ? "text-purple-400" : "text-blue-400"}`,
-      calendarIcon: `w-4 h-4 ${isUserUploaded ? "text-purple-400" : "text-blue-400"}`,
+      downloadIcon: `w-4 h-4 ${isUserUploaded ? "text-[#6DF77E]" : "text-blue-400"}`,
+      fileTextIcon: `w-4 h-4 ${isUserUploaded ? "text-[#6DF77E]" : "text-blue-400"}`,
+      calendarIcon: `w-4 h-4 ${isUserUploaded ? "text-[#6DF77E]" : "text-blue-400"}`,
 
-      sizeTag: `text-xs ${isUserUploaded ? "bg-purple-900/30 text-purple-300 border border-purple-500/30" : "bg-blue-900/30 text-blue-300 border border-blue-500/30"} px-2 py-1 rounded font-semibold`,
+      sizeTag: `text-xs ${isUserUploaded ? "bg-[#6DF77E]/10 text-[#6DF77E] border border-[#6DF77E]/30" : "bg-blue-900/30 text-blue-300 border border-blue-500/30"} px-2 py-1 rounded font-semibold`,
 
-      actionButton: `${isUserUploaded ? "bg-purple-600 hover:bg-purple-700 border border-purple-600" : "bg-blue-600 hover:bg-blue-700 border border-blue-600"} text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg`,
+      actionButton: `${isUserUploaded ? "bg-[#6DF77E] hover:bg-[#04C61B] border border-[#6DF77E] text-[#0C2B31]" : "bg-blue-600 hover:bg-blue-700 border border-blue-600 text-white"} px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg`,
 
       tags: isUserUploaded
-        ? "bg-purple-900/30 text-purple-300 px-2 py-1 rounded-lg text-xs border border-purple-500/30 font-medium"
+        ? "bg-[#6DF77E]/10 text-[#6DF77E] px-2 py-1 rounded-lg text-xs border border-[#6DF77E]/30 font-medium"
         : "bg-blue-900/30 text-blue-300 px-2 py-1 rounded-lg text-xs border border-blue-500/30 font-medium",
     };
   }, [dataset.isUserUploaded]);
@@ -121,7 +121,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
   return (
     <div
       ref={cardRef}
-      className={`bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group ${styles.cardStyle}`}
+      className={`bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group ${styles.cardStyle} flex flex-col h-full`}
     >
       {/* Image - with optimized loading */}
       <div className="h-48 relative overflow-hidden">
@@ -130,7 +130,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
             {/* Progressive image loading with inline SVG placeholder */}
             <div className="absolute inset-0 flex items-center justify-center bg-gray-900">
               <FileText
-                className={`w-12 h-12 ${styles.accentColor === "purple" ? "text-purple-400/40" : "text-blue-400/40"}`}
+                className={`w-12 h-12 ${styles.accentColor === "green" ? "text-[#6DF77E]/40" : "text-blue-400/40"}`}
               />
             </div>
             <Image
@@ -179,7 +179,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
         ) : (
           <div className="h-full bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 flex items-center justify-center">
             <FileText
-              className={`w-16 h-16 ${styles.accentColor === "purple" ? "text-purple-400/60 group-hover:text-purple-300" : "text-blue-400/60 group-hover:text-blue-300"} transition-all duration-300 group-hover:scale-110`}
+              className={`w-16 h-16 ${styles.accentColor === "green" ? "text-[#6DF77E]/60 group-hover:text-[#6DF77E]" : "text-blue-400/60 group-hover:text-blue-300"} transition-all duration-300 group-hover:scale-110`}
             />
           </div>
         )}
@@ -194,7 +194,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
         {getStatusBadge()}
       </div>
 
-      <div className="p-6 bg-gray-800">
+      <div className="p-6 bg-gray-800 flex flex-col flex-1">
         {/* Title and Rating */}
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-xl font-bold text-white line-clamp-2 flex-1 mr-2">
@@ -247,7 +247,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
         </div>
 
         {/* Price and Purchase/Manage Button */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-700">
+        <div className="flex items-center justify-between pt-4 border-t border-gray-700 mt-auto">
           <div className="flex items-center gap-1">
             <DollarSign className="w-5 h-5 text-green-400" />
             <span className="text-2xl font-bold text-green-400">

@@ -16,10 +16,10 @@ const ContactSection = () => {
         <div className="flex items-center justify-center space-x-2 text-blue-400 transition-all duration-300 group">
           <Mail className="w-6 h-6 animate-float" />
           <a
-            href="mailto:contact@exchaingeai.com"
+            href="mailto:marketing@exchainge.com"
             className="text-xl font-semibold hover:text-blue-300 transition-colors group-hover:scale-105 transform duration-300"
           >
-            contact@exchaingeai.com
+            marketing@exchainge.net
           </a>
         </div>
       </div>

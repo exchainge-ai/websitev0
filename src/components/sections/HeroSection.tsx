@@ -12,7 +12,7 @@ const HeroSection = () => {
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
         <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-[#6DF77E] via-[#04C61B] to-[#6DF77E] bg-clip-text text-transparent">
             ExchAInge
           </h1>
           <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto leading-relaxed font-medium">
@@ -23,7 +23,7 @@ const HeroSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
               type="button"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-blue-600"
+              className="bg-[#6DF77E] hover:bg-[#04C61B] text-[#0C2B31] px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 shadow-lg border-2 border-[#6DF77E]"
             >
               <span className="relative z-10">Explore Datasets</span>
             </button>
@@ -38,13 +38,13 @@ const HeroSection = () => {
       </div>
 
       {/* Floating elements */}
-      <div className="absolute top-20 left-20 w-4 h-4 bg-blue-400 rounded-full animate-float opacity-60"></div>
+      <div className="absolute top-20 left-20 w-4 h-4 bg-[#6DF77E] rounded-full animate-float opacity-60"></div>
       <div
-        className="absolute top-40 right-32 w-6 h-6 bg-purple-400 rounded-full animate-float opacity-40"
+        className="absolute top-40 right-32 w-6 h-6 bg-[#04C61B] rounded-full animate-float opacity-40"
         style={{ animationDelay: "1s" }}
       ></div>
       <div
-        className="absolute bottom-32 left-40 w-3 h-3 bg-cyan-400 rounded-full animate-float opacity-50"
+        className="absolute bottom-32 left-40 w-3 h-3 bg-[#6DF77E] rounded-full animate-float opacity-50"
         style={{ animationDelay: "2s" }}
       ></div>
     </div>

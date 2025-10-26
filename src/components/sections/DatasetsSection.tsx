@@ -6,10 +6,13 @@ import { AlertTriangle, RefreshCw, Upload } from "lucide-react";
 import SearchBar from "../shared/SearchBar";
 import CategoryFilter from "../shared/CategoryFilter";
 import DatasetCard from "../shared/DatasetCard";
+import Pagination from "../shared/Pagination";
 import type { ExtendedDataset } from "@/lib/types/dataset";
 import { datasetDtoToCard, type DatasetDTO } from "@/lib/mappers/dataset";
 import type { DatasetCategory } from "@/lib/types/dataset";
 import { apiFetch, ApiError } from "@/lib/api/client";
+
+const ITEMS_PER_PAGE = 12;
 
 interface DatasetsSectionProps {
   searchTerm: string;
@@ -59,6 +62,7 @@ const DatasetsSection = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reloadToken, setReloadToken] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   /**
    * Scrolls to and highlights a specific dataset when accessed via deep link.
@@ -147,7 +151,17 @@ const DatasetsSection = ({
     });
   }, [baseDatasets, selectedCategory, searchTerm]);
 
+  const paginatedDatasets = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    return filteredDatasets.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+  }, [filteredDatasets, currentPage]);
+
+  const totalPages = Math.ceil(filteredDatasets.length / ITEMS_PER_PAGE);
   const totalDatasets = baseDatasets.length;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory]);
 
   const handleRetryLoading = () => {
     setReloadToken((value) => value + 1);
@@ -180,10 +194,16 @@ const DatasetsSection = ({
         </div>
       </div>
 
-      <div className="mb-6 relative z-10">
+      <div className="mb-6 relative z-10 flex items-center justify-between">
         <p className="text-gray-300 font-medium">
-          Showing {filteredDatasets.length} of {totalDatasets} datasets
+          Showing {paginatedDatasets.length} of {filteredDatasets.length} datasets
+          {filteredDatasets.length !== totalDatasets && ` (${totalDatasets} total)`}
         </p>
+        {totalPages > 1 && (
+          <p className="text-sm text-gray-400">
+            Page {currentPage} of {totalPages}
+          </p>
+        )}
       </div>
 
       {error && (
@@ -204,15 +224,15 @@ const DatasetsSection = ({
 
       {isLoading ? (
         <div className="flex justify-center items-center py-12 relative z-10">
-          <div className="w-12 h-12 border-t-4 border-purple-500 border-solid rounded-full animate-spin" />
+          <div className="w-12 h-12 border-t-4 border-[#6DF77E] border-solid rounded-full animate-spin" />
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
           <Link href="/dashboard/upload">
-            <div className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border-2 border-dashed border-purple-500/40 hover:border-purple-500/60 relative ring-2 ring-purple-500/20 hover:ring-purple-500/40 h-full">
-              <div className="h-48 relative overflow-hidden bg-gradient-to-br from-purple-900/20 to-blue-900/20">
+            <div className="bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group border-2 border-dashed border-[#6DF77E]/40 hover:border-[#6DF77E]/60 relative ring-2 ring-[#6DF77E]/20 hover:ring-[#6DF77E]/40 h-full">
+              <div className="h-48 relative overflow-hidden bg-gradient-to-br from-[#0C2B31]/40 to-[#6DF77E]/10">
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <Upload className="w-16 h-16 text-purple-400 group-hover:scale-110 transition-transform duration-300" />
+                  <Upload className="w-16 h-16 text-[#6DF77E] group-hover:scale-110 transition-transform duration-300" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               </div>
@@ -224,25 +244,25 @@ const DatasetsSection = ({
                   <p className="text-gray-300 mb-2 text-center font-medium">
                     Share your robotics & AI datasets
                   </p>
-                  <p className="text-purple-400 text-xs mb-4 italic text-center">
+                  <p className="text-[#6DF77E] text-xs mb-4 italic text-center">
                     Earn revenue from your data contributions
                   </p>
                 </div>
                 <div className="flex flex-wrap gap-2 mb-4 justify-center">
-                  <span className="bg-purple-900/30 text-purple-300 px-2 py-1 rounded-lg text-xs border border-purple-500/30 font-medium">
+                  <span className="bg-[#6DF77E]/10 text-[#6DF77E] px-2 py-1 rounded-lg text-xs border border-[#6DF77E]/30 font-medium">
                     AI Verified
                   </span>
-                  <span className="bg-purple-900/30 text-purple-300 px-2 py-1 rounded-lg text-xs border border-purple-500/30 font-medium">
+                  <span className="bg-[#6DF77E]/10 text-[#6DF77E] px-2 py-1 rounded-lg text-xs border border-[#6DF77E]/30 font-medium">
                     Keep Ownership
                   </span>
-                  <span className="bg-purple-900/30 text-purple-300 px-2 py-1 rounded-lg text-xs border border-purple-500/30 font-medium">
+                  <span className="bg-[#6DF77E]/10 text-[#6DF77E] px-2 py-1 rounded-lg text-xs border border-[#6DF77E]/30 font-medium">
                     Earn Revenue
                   </span>
                 </div>
                 <div className="mt-auto pt-4 border-t border-gray-700">
                   <button
                     type="button"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg border border-purple-600 w-full"
+                    className="bg-[#6DF77E] hover:bg-[#04C61B] text-[#0C2B31] px-6 py-2 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg border border-[#6DF77E] w-full"
                   >
                     <span className="relative z-10">Get Started</span>
                   </button>
@@ -251,8 +271,8 @@ const DatasetsSection = ({
             </div>
           </Link>
 
-          {filteredDatasets.length > 0 ? (
-            filteredDatasets.map((dataset) => (
+          {paginatedDatasets.length > 0 ? (
+            paginatedDatasets.map((dataset) => (
               <div
                 key={dataset.id}
                 id={`dataset-${dataset.id}`}
@@ -262,12 +282,27 @@ const DatasetsSection = ({
               </div>
             ))
           ) : (
-            <div className="col-span-3 py-16 text-center">
-              <p className="text-gray-400 text-lg">
-                No datasets match your search criteria.
-              </p>
-            </div>
+            !isLoading && (
+              <div className="col-span-3 py-16 text-center">
+                <p className="text-gray-400 text-lg mb-2">
+                  No datasets match your search criteria.
+                </p>
+                <p className="text-sm text-gray-500">
+                  Try adjusting your filters or search term
+                </p>
+              </div>
+            )
           )}
+        </div>
+      )}
+
+      {!isLoading && totalPages > 1 && (
+        <div className="relative z-10">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
         </div>
       )}
     </div>

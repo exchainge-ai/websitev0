@@ -50,8 +50,8 @@ export function FeedbackModal({
           <form onSubmit={handleSubmit}>
             {/* Header */}
             <div className="mb-6">
-              <div className="w-12 h-12 bg-purple-600/20 rounded-full flex items-center justify-center mb-4">
-                <MessageSquare className="w-6 h-6 text-purple-400" />
+              <div className="w-12 h-12 bg-brand-green-light/20 rounded-full flex items-center justify-center mb-4">
+                <MessageSquare className="w-6 h-6 text-brand-green-light" />
               </div>
               <h2 className="text-2xl font-bold text-white mb-2">
                 How was your experience?
@@ -98,7 +98,7 @@ export function FeedbackModal({
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
                 placeholder="Tell us about data quality, completeness, documentation..."
-                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none h-24"
+                className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-400 focus:outline-none focus:border-brand-green-light resize-none h-24"
               />
             </div>
 
@@ -114,7 +114,7 @@ export function FeedbackModal({
               <button
                 type="submit"
                 disabled={rating === 0}
-                className="flex-1 px-4 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
+                className="flex-1 px-4 py-3 bg-brand-green-light hover:bg-brand-green-strong disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors flex items-center justify-center gap-2"
               >
                 <Send className="w-4 h-4" />
                 Submit

@@ -214,14 +214,14 @@ export function DashboardContent() {
                 Manage your datasets and track earnings
               </p>
               {user && (
-                <p className="text-sm text-purple-400 mt-1">
+                <p className="text-sm text-brand-green-light mt-1">
                   Welcome back, {userDisplayName}
                 </p>
               )}
             </div>
             <Link
               href="/dashboard/upload"
-              className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+              className="bg-brand-green-light hover:bg-brand-green-strong text-white px-6 py-3 rounded-xl font-semibold transition-all"
             >
               Upload New Dataset
             </Link>
@@ -249,7 +249,7 @@ export function DashboardContent() {
             <div className="bg-gray-800 rounded-xl p-6 border border-gray-700">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-gray-400 text-sm">Total Sales</span>
-                <TrendingUp className="w-5 h-5 text-purple-400" />
+                <TrendingUp className="w-5 h-5 text-brand-green-light" />
               </div>
               <p className="text-3xl font-bold">{statistics.totalSales}</p>
             </div>
@@ -279,7 +279,7 @@ export function DashboardContent() {
 
             {isLoading ? (
               <div className="p-12 text-center">
-                <div className="w-8 h-8 border-t-2 border-purple-500 border-r-2 rounded-full animate-spin mx-auto mb-4"></div>
+                <div className="w-8 h-8 border-t-2 border-brand-green-light border-r-2 rounded-full animate-spin mx-auto mb-4"></div>
                 <p className="text-gray-400">Loading your datasets...</p>
               </div>
             ) : (
@@ -330,7 +330,7 @@ export function DashboardContent() {
                               {renderDatasetStatus(dataset)}
                             </td>
                             <td className="px-6 py-4">
-                              <span className="text-purple-400 font-semibold">
+                              <span className="text-brand-green-light font-semibold">
                                 {formatPriceUsd(dataset.priceUsd)}
                               </span>
                             </td>
@@ -355,7 +355,7 @@ export function DashboardContent() {
                             <td className="px-6 py-4">
                               <Link
                                 href={`/dashboard/dataset/${dataset.id}`}
-                                className="text-purple-400 hover:text-purple-300 font-medium text-sm"
+                                className="text-brand-green-light hover:text-brand-green-strong font-medium text-sm"
                               >
                                 View Details
                               </Link>
@@ -376,7 +376,7 @@ export function DashboardContent() {
                     </p>
                     <Link
                       href="/dashboard/upload"
-                      className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+                      className="inline-block bg-brand-green-light hover:bg-brand-green-strong text-white px-6 py-3 rounded-xl font-semibold transition-all"
                     >
                       Upload Dataset
                     </Link>
