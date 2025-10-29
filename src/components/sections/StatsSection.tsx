@@ -14,7 +14,7 @@ const StatsSection = () => {
       icon: Users,
       label: "AI Researchers",
       value: "25,000+",
-      color: "text-purple-400",
+      color: "text-brand-green-light",
     },
     {
       icon: TrendingUp,

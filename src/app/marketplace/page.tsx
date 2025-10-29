@@ -9,7 +9,6 @@ import StatsSection from "@/components/sections/StatsSection";
 import HowItWorksSection from "@/components/sections/HowItWorksSection";
 import NewsletterSection from "@/components/sections/NewsletterSection";
 import ContactSection from "@/components/sections/ContactSection";
-import TeamSection from "@/components/sections/TeamSection";
 
 export default function MarketplacePage() {
   const searchParams = useSearchParams();
@@ -73,7 +72,7 @@ export default function MarketplacePage() {
               <p className="text-xl text-gray-300 font-medium mb-8">
                 Loading datasets...
               </p>
-              <div className="w-12 h-12 border-t-4 border-purple-500 border-solid rounded-full animate-spin mx-auto"></div>
+              <div className="w-12 h-12 border-t-4 border-brand-green border-solid rounded-full animate-spin mx-auto"></div>
             </div>
           }
         >
@@ -98,10 +97,6 @@ export default function MarketplacePage() {
 
         <Suspense fallback={<div className="h-16"></div>}>
           <ContactSection />
-        </Suspense>
-
-        <Suspense fallback={<div className="h-16"></div>}>
-          <TeamSection />
         </Suspense>
       </div>
     </div>

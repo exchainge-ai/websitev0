@@ -281,7 +281,7 @@ export function PrivacyContent() {
         <div className="mt-8 text-center">
           <Link
             href="/marketplace"
-            className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+            className="inline-block bg-brand-green-light hover:bg-brand-green-strong text-white px-8 py-3 rounded-xl font-semibold transition-all"
           >
             Back to Marketplace
           </Link>

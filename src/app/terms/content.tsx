@@ -22,9 +22,9 @@ export function TermsContent() {
         </div>
 
         {/* Summary Section */}
-        <div className="bg-purple-900/20 border border-purple-500/30 rounded-xl p-6 mb-8">
+        <div className="bg-brand-green-strong/20 border border-brand-green-light/30 rounded-xl p-6 mb-8">
           <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
-            <CheckCircle className="w-6 h-6 text-purple-400" />
+            <CheckCircle className="w-6 h-6 text-brand-green-light" />
             Summary
           </h2>
           <p className="text-gray-300 mb-4">
@@ -219,7 +219,7 @@ export function TermsContent() {
               For questions about these terms, contact us at{" "}
               <a
                 href="mailto:legal@exchainge.ai"
-                className="text-purple-400 hover:text-purple-300"
+                className="text-brand-green-light hover:text-green-300"
               >
                 legal@exchainge.ai
               </a>
@@ -230,7 +230,7 @@ export function TermsContent() {
         <div className="mt-8 text-center">
           <Link
             href="/marketplace"
-            className="inline-block bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-xl font-semibold transition-all"
+            className="inline-block bg-brand-green-light hover:bg-brand-green-strong text-white px-8 py-3 rounded-xl font-semibold transition-all"
           >
             Back to Marketplace
           </Link>

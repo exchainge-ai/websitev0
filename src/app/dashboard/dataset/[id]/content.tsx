@@ -253,7 +253,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
         <div className="min-h-screen bg-gray-900 text-white">
           <div className="max-w-7xl mx-auto px-4 py-12">
             <div className="flex justify-center items-center min-h-[400px]">
-              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500" />
+              <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-brand-green-light" />
             </div>
           </div>
         </div>
@@ -272,7 +272,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
             </p>
             <Link
               href="/dashboard"
-              className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+              className="inline-flex items-center gap-2 bg-brand-green-light hover:bg-brand-green-strong text-white px-6 py-3 rounded-xl font-semibold transition-all"
             >
               <ArrowLeft className="w-5 h-5" />
               Back to Dashboard
@@ -315,7 +315,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
 
           {statusMessage && (
             <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 flex items-center gap-3">
-              <AlertTriangle className="w-5 h-5 text-purple-400" />
+              <AlertTriangle className="w-5 h-5 text-brand-green-light" />
               <p className="text-gray-200">{statusMessage}</p>
             </div>
           )}
@@ -368,7 +368,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                     {dataset.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-3 py-1 bg-purple-900/30 text-purple-300 rounded-full text-xs border border-purple-500/20"
+                        className="px-3 py-1 bg-gray-800/30 text-brand-green-light/80 rounded-full text-xs border border-brand-green-light/20"
                       >
                         #{tag}
                       </span>
@@ -431,7 +431,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                   </div>
                   <div className="mt-3 h-2 bg-gray-900 rounded-full overflow-hidden">
                     <div
-                      className="h-2 bg-purple-500 rounded-full transition-all duration-500 ease-out"
+                      className="h-2 bg-brand-green-light rounded-full transition-all duration-500 ease-out"
                       style={{
                         width: `${
                           Math.min(
@@ -461,9 +461,9 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
               </div>
 
               {dataset.blockchainExplorerUrl && (
-                <div className="bg-gradient-to-br from-purple-900/20 to-blue-900/20 border border-purple-500/30 rounded-2xl p-6 space-y-4">
+                <div className="bg-gradient-to-br from-gray-800/20 to-blue-900/20 border border-brand-green-light/30 rounded-2xl p-6 space-y-4">
                   <div className="flex items-center gap-2">
-                    <Shield className="w-5 h-5 text-purple-400" />
+                    <Shield className="w-5 h-5 text-brand-green-light" />
                     <h2 className="text-lg font-semibold">Blockchain Proof</h2>
                   </div>
                   <p className="text-sm text-gray-300">
@@ -474,7 +474,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                     {dataset.datasetHash && (
                       <div>
                         <p className="text-xs text-gray-400 mb-1">Dataset Hash</p>
-                        <code className="block text-xs bg-gray-900/50 px-3 py-2 rounded-lg text-purple-300 font-mono break-all">
+                        <code className="block text-xs bg-gray-900/50 px-3 py-2 rounded-lg text-brand-green-light/80 font-mono break-all">
                           {dataset.datasetHash}
                         </code>
                       </div>
@@ -494,7 +494,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                     href={dataset.blockchainExplorerUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 px-4 py-2.5 rounded-xl font-semibold transition-colors text-sm"
+                    className="inline-flex items-center gap-2 bg-brand-green-light hover:bg-brand-green-strong px-4 py-2.5 rounded-xl font-semibold transition-colors text-sm"
                   >
                     <ExternalLink className="w-4 h-4" />
                     View on Solana Explorer
@@ -577,7 +577,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-gray-300">
-                      <Download className="w-5 h-5 text-purple-400" />
+                      <Download className="w-5 h-5 text-brand-green-light" />
                       <span>Downloads</span>
                     </div>
                     <span className="text-xl font-semibold">

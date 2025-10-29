@@ -15,7 +15,7 @@ const CryptoBackground = () => {
         Ξ
       </div>
       <div
-        className="absolute bottom-1/3 left-1/3 text-4xl text-purple-500/20 animate-float"
+        className="absolute bottom-1/3 left-1/3 text-4xl text-brand-green-light/20 animate-float"
         style={{ animationDelay: "2s" }}
       >
         ◊
@@ -50,7 +50,7 @@ const CryptoBackground = () => {
         HASH256
       </div>
       <div
-        className="absolute top-0 left-4/12 text-purple-600/25 text-xs font-mono animate-[float_6s_ease-in-out_infinite]"
+        className="absolute top-0 left-4/12 text-brand-green-light/25 text-xs font-mono animate-[float_6s_ease-in-out_infinite]"
         style={{ animationDelay: "1.5s" }}
       >
         BLOCKCHAIN
@@ -63,12 +63,12 @@ const CryptoBackground = () => {
       </div>
 
       {/* Pulsing gradient orbs */}
-      <div className="absolute top-1/5 left-1/5 w-64 h-64 bg-gradient-to-r from-green-500/10 via-blue-500/10 to-purple-500/10 rounded-full blur-3xl animate-crypto-pulse"></div>
+      <div className="absolute top-1/5 left-1/5 w-64 h-64 bg-gradient-to-r from-green-500/10 via-blue-500/10 to-brand-green-light/10 rounded-full blur-3xl animate-crypto-pulse"></div>
       <div
-        className="absolute bottom-1/4 right-1/5 w-80 h-80 bg-gradient-to-r from-purple-500/10 via-cyan-500/10 to-green-500/10 rounded-full blur-3xl animate-crypto-pulse"
+        className="absolute bottom-1/4 right-1/5 w-80 h-80 bg-gradient-to-r from-brand-green-light/10 via-cyan-500/10 to-green-500/10 rounded-full blur-3xl animate-crypto-pulse"
         style={{ animationDelay: "1s" }}
       ></div>
-      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-r from-blue-500/5 via-purple-500/5 to-cyan-500/5 rounded-full blur-3xl animate-glow-pulse"></div>
+      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-gradient-to-r from-blue-500/5 via-brand-green-light/5 to-cyan-500/5 rounded-full blur-3xl animate-glow-pulse"></div>
 
       {/* Hexagonal grid pattern */}
       <div className="absolute inset-0 opacity-10">
@@ -107,7 +107,7 @@ const CryptoBackground = () => {
         style={{ animationDelay: "0.5s" }}
       ></div>
       <div
-        className="absolute bottom-1/6 left-1/4 w-4 h-4 bg-purple-500/60 rounded-full animate-pulse shadow-lg shadow-purple-500/30"
+        className="absolute bottom-1/6 left-1/4 w-4 h-4 bg-brand-green-light/60 rounded-full animate-pulse shadow-lg shadow-brand-green-light/30"
         style={{ animationDelay: "1s" }}
       ></div>
       <div
@@ -156,13 +156,13 @@ const CryptoBackground = () => {
         <defs>
           <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#22d3ee" stopOpacity="0" />
-            <stop offset="50%" stopColor="#8b5cf6" stopOpacity="1" />
+            <stop offset="50%" stopColor="#06d6a0" stopOpacity="1" />
             <stop offset="100%" stopColor="#06d6a0" stopOpacity="0" />
           </linearGradient>
           <linearGradient id="gradient2" x1="0%" y1="0%" x2="100%" y2="0%">
             <stop offset="0%" stopColor="#06d6a0" stopOpacity="0" />
             <stop offset="50%" stopColor="#3b82f6" stopOpacity="1" />
-            <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0" />
+            <stop offset="100%" stopColor="#06d6a0" stopOpacity="0" />
           </linearGradient>
         </defs>
       </svg>

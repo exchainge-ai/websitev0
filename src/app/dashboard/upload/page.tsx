@@ -22,7 +22,7 @@ export default function UploadPage() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-brand-green-light border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-400">Loading...</p>
         </div>
       </div>
@@ -34,7 +34,7 @@ export default function UploadPage() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
         <div className="max-w-md w-full bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 text-center">
-          <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 bg-gradient-to-br from-brand-green-light to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
             <Shield className="w-10 h-10 text-white" />
           </div>
 
@@ -49,7 +49,7 @@ export default function UploadPage() {
           <div className="space-y-4">
             <button
               onClick={() => login()}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-brand-green-light to-blue-600 hover:from-brand-green-strong hover:to-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2"
             >
               <LogIn className="w-5 h-5" />
               Sign In to Continue

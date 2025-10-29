@@ -11,7 +11,7 @@ export default function AboutPage() {
         {/* Gradient Orb Background */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-1/2 -left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
-          <div className="absolute -bottom-1/2 -right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl" />
+          <div className="absolute -bottom-1/2 -right-1/4 w-96 h-96 bg-brand-green-light/20 rounded-full blur-3xl" />
         </div>
 
         <div className="relative container mx-auto px-4 py-32">
@@ -29,7 +29,7 @@ export default function AboutPage() {
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold mb-8">
-              <span className="bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-white via-blue-200 to-green-200 bg-clip-text text-transparent">
                 Building the foundation for
                 <br />
                 Physical AI
@@ -174,7 +174,7 @@ export default function AboutPage() {
               },
               {
                 icon: DollarSign,
-                color: "purple",
+                color: "green",
                 title: "Collectors Earn",
                 desc: "Data creators get paid fairly. Royalties flow automatically. Forever.",
               },
@@ -213,19 +213,19 @@ export default function AboutPage() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-br from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-3xl p-12 md:p-16">
+          <div className="bg-gradient-to-br from-blue-500/10 to-brand-green-light/10 border border-blue-500/20 rounded-3xl p-12 md:p-16">
             <div className="text-center mb-8">
               <div className="inline-flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-purple-500" />
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-500 to-pink-500" />
-                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-pink-500 to-red-500" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-blue-500 to-brand-green-light" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-brand-green-light to-cyan-500" />
+                <div className="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
               </div>
             </div>
 
             <blockquote className="text-2xl md:text-3xl text-white font-medium mb-8 leading-relaxed text-center">
               "We're not building another dataset marketplace.
               <br />
-              We're building the <span className="text-transparent bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text">data layer for Physical AI</span>."
+              We're building the <span className="text-transparent bg-gradient-to-r from-blue-400 to-brand-green-light bg-clip-text">data layer for Physical AI</span>."
             </blockquote>
 
             <div className="text-center">
@@ -256,7 +256,7 @@ export default function AboutPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.a
               href="/marketplace"
-              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 rounded-xl font-semibold text-white transition-all"
+              className="px-8 py-4 bg-gradient-to-r from-blue-500 to-brand-green-light hover:from-blue-600 hover:to-brand-green-strong rounded-xl font-semibold text-white transition-all"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

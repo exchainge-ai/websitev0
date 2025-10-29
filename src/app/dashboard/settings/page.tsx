@@ -33,7 +33,7 @@ export default function SettingsPage() {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-16 h-16 border-4 border-brand-green-light border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-400">Loading settings...</p>
         </div>
       </div>
@@ -105,7 +105,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab("account")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === "account"
-                    ? "bg-purple-600 text-white"
+                    ? "bg-brand-green-light text-white"
                     : "text-gray-300 hover:bg-gray-700"
                 }`}
               >
@@ -117,7 +117,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab("wallet")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === "wallet"
-                    ? "bg-purple-600 text-white"
+                    ? "bg-brand-green-light text-white"
                     : "text-gray-300 hover:bg-gray-700"
                 }`}
               >
@@ -129,7 +129,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab("billing")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === "billing"
-                    ? "bg-purple-600 text-white"
+                    ? "bg-brand-green-light text-white"
                     : "text-gray-300 hover:bg-gray-700"
                 }`}
               >
@@ -141,7 +141,7 @@ export default function SettingsPage() {
                 onClick={() => setActiveTab("notifications")}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                   activeTab === "notifications"
-                    ? "bg-purple-600 text-white"
+                    ? "bg-brand-green-light text-white"
                     : "text-gray-300 hover:bg-gray-700"
                 }`}
               >
@@ -225,7 +225,7 @@ export default function SettingsPage() {
                   <div className="bg-gray-800 rounded-xl border border-gray-700 p-6">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
+                        <div className="w-10 h-10 bg-gradient-to-br from-brand-green-light to-cyan-500 rounded-full flex items-center justify-center">
                           <Wallet className="w-5 h-5 text-white" />
                         </div>
                         <div>
@@ -303,15 +303,15 @@ export default function SettingsPage() {
                 {/* Create Solana Wallet if missing */}
                 {!solanaWallet && ethereumWallet && (
                   <div className="bg-gray-800 rounded-xl border border-gray-700 p-8 text-center">
-                    <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Wallet className="w-8 h-8 text-purple-400" />
+                    <div className="w-16 h-16 bg-gradient-to-br from-brand-green-light/20 to-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Wallet className="w-8 h-8 text-brand-green-light" />
                     </div>
                     <h3 className="text-xl font-semibold mb-2">Solana Wallet Not Found</h3>
                     <p className="text-gray-400 mb-6">Create a Solana wallet for blockchain proofs and payments</p>
                     <button
                       onClick={handleCreateSolanaWallet}
                       disabled={creatingWallet}
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
+                      className="bg-gradient-to-r from-brand-green-light to-cyan-500 hover:from-brand-green-strong hover:to-cyan-600 text-white px-6 py-3 rounded-lg font-semibold transition-all transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
                     >
                       {creatingWallet ? (
                         <>
@@ -354,7 +354,7 @@ export default function SettingsPage() {
                           <p className="text-white font-semibold">Free Tier</p>
                           <p className="text-sm text-gray-400">Upload up to 10 datasets</p>
                         </div>
-                        <button className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                        <button className="bg-brand-green-light hover:bg-brand-green-strong text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                           Upgrade
                         </button>
                       </div>
@@ -406,7 +406,7 @@ export default function SettingsPage() {
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="sr-only peer" defaultChecked={idx < 2} />
-                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-purple-600"></div>
+                        <div className="w-11 h-6 bg-gray-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-brand-green-light"></div>
                       </label>
                     </div>
                   ))}

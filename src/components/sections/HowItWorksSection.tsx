@@ -14,7 +14,7 @@ const HowItWorksSection = () => {
       icon: ShoppingCart,
       title: "Purchase",
       description: "Secure transactions with instant access to your data",
-      color: "purple",
+      color: "green",
     },
     {
       icon: Download,

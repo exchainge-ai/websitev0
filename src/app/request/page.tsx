@@ -23,7 +23,7 @@ export default function RequestPage() {
             <span className="text-sm text-blue-400">Get exactly what you need</span>
           </div>
 
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-green-200 bg-clip-text text-transparent">
             Request Custom Data
           </h1>
 
@@ -45,7 +45,7 @@ export default function RequestPage() {
                 key={s}
                 className={`h-2 rounded-full transition-all ${
                   step === s
-                    ? "w-16 bg-gradient-to-r from-blue-500 to-purple-500"
+                    ? "w-16 bg-gradient-to-r from-blue-500 to-brand-green-light"
                     : "w-2 bg-gray-700"
                 }`}
                 whileHover={{ scale: 1.2 }}
@@ -102,7 +102,7 @@ export default function RequestPage() {
                 <motion.button
                   onClick={() => setStep("budget")}
                   disabled={!description}
-                  className="mt-6 w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:from-gray-700 disabled:to-gray-700 rounded-xl font-semibold text-white transition-all disabled:cursor-not-allowed"
+                  className="mt-6 w-full py-4 bg-gradient-to-r from-blue-500 to-brand-green-light hover:from-blue-600 hover:to-brand-green-strong disabled:from-gray-700 disabled:to-gray-700 rounded-xl font-semibold text-white transition-all disabled:cursor-not-allowed"
                   whileHover={{ scale: description ? 1.02 : 1 }}
                   whileTap={{ scale: description ? 0.98 : 1 }}
                 >
@@ -168,7 +168,7 @@ export default function RequestPage() {
                 <motion.button
                   onClick={() => setStep("timeline")}
                   disabled={!budget}
-                  className="mt-6 w-full py-4 bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 disabled:from-gray-700 disabled:to-gray-700 rounded-xl font-semibold text-white transition-all disabled:cursor-not-allowed"
+                  className="mt-6 w-full py-4 bg-gradient-to-r from-blue-500 to-brand-green-light hover:from-blue-600 hover:to-brand-green-strong disabled:from-gray-700 disabled:to-gray-700 rounded-xl font-semibold text-white transition-all disabled:cursor-not-allowed"
                   whileHover={{ scale: budget ? 1.02 : 1 }}
                   whileTap={{ scale: budget ? 0.98 : 1 }}
                 >
@@ -183,7 +183,7 @@ export default function RequestPage() {
                 animate={{ opacity: 1, x: 0 }}
                 className="text-center"
               >
-                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full flex items-center justify-center">
+                <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-blue-500 to-brand-green-light rounded-full flex items-center justify-center">
                   <svg
                     className="w-10 h-10 text-white"
                     fill="none"
@@ -256,7 +256,7 @@ export default function RequestPage() {
                 <div className="flex justify-center mb-3">
                   {item.icon === "lock" && <Lock className="w-10 h-10 text-blue-400" />}
                   {item.icon === "zap" && <Zap className="w-10 h-10 text-yellow-400" />}
-                  {item.icon === "star" && <Star className="w-10 h-10 text-purple-400" />}
+                  {item.icon === "star" && <Star className="w-10 h-10 text-brand-green-light" />}
                 </div>
                 <h3 className="font-semibold text-white mb-2">{item.title}</h3>
                 <p className="text-sm text-gray-400">{item.desc}</p>

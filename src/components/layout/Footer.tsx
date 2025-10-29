@@ -1,44 +1,56 @@
+import { BrandWordmark } from "@/components/shared/BrandWordmark";
+
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white py-12 relative">
-      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-gray-800"></div>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent block mb-4">
-              ExchAInge
-            </span>
-            <p className="text-gray-400 font-medium">
-              The premier marketplace for specialized datasets powering physical AI applications.
+    <footer className="relative overflow-hidden bg-gray-950 text-white py-12">
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/80 to-gray-900/40" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(99,247,125,0.12),transparent_60%)]" />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8 grid grid-cols-1 gap-10 md:grid-cols-4">
+          <div className="space-y-4">
+            <BrandWordmark className="text-2xl tracking-tight" />
+            <p className="max-w-sm text-sm text-gray-400">
+              The marketplace for verified physical AI datasets, pairing trusted hardware partners with builders shaping the future.
             </p>
           </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Platform</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Browse Datasets</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">List Your Data</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">API Access</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Resources</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Documentation</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Research Papers</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Support</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-4 text-white">Company</h4>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">About</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Careers</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors font-medium">Contact</a></li>
-            </ul>
-          </div>
+
+          {[
+            {
+              heading: "Platform",
+              links: ["Browse Datasets", "List Your Data", "API Access"],
+            },
+            {
+              heading: "Resources",
+              links: ["Documentation", "Research Papers", "Support"],
+            },
+            {
+              heading: "Company",
+              links: ["About", "Careers", "Contact"],
+            },
+          ].map((column) => (
+            <div key={column.heading}>
+              <h4 className="text-lg font-semibold text-white">{column.heading}</h4>
+              <ul className="mt-4 space-y-2">
+                {column.links.map((link) => (
+                  <li key={link}>
+                    <a
+                      href="#"
+                      className="text-sm font-medium text-gray-400 transition-colors hover:text-white"
+                    >
+                      {link}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-        <div className="border-t border-gray-700 pt-8 text-center">
-          <p className="text-gray-400 font-medium">&copy; {new Date().getFullYear()} ExchAInge. All rights reserved.</p>
+
+        <div className="border-t border-gray-800 pt-8 text-center">
+          <p className="text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} exchainge. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

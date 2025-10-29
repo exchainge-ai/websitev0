@@ -257,7 +257,7 @@ export function DatasetRegistrationPanel({
   ]);
 
   return (
-    <div className="w-full rounded-2xl border border-purple-500/20 bg-gray-900/60 p-6 shadow-xl">
+    <div className="w-full rounded-2xl border border-brand-green-light/20 bg-gray-900/60 p-6 shadow-xl">
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-white">Register Dataset on Solana</h3>
@@ -274,8 +274,8 @@ export function DatasetRegistrationPanel({
           onClick={() => handleModeChange("trustless")}
           className={`flex flex-col gap-1 rounded-xl border px-4 py-3 text-left transition-colors ${
             mode === "trustless"
-              ? "border-purple-500 bg-purple-500/20 text-white"
-              : "border-gray-700 bg-gray-800 text-gray-300 hover:border-purple-500/70"
+              ? "border-brand-green-light bg-brand-green-light/20 text-white"
+              : "border-gray-700 bg-gray-800 text-gray-300 hover:border-brand-green-light/70"
           }`}
         >
           <span className="flex items-center gap-2 text-sm font-semibold">
@@ -292,8 +292,8 @@ export function DatasetRegistrationPanel({
           onClick={() => handleModeChange("simple")}
           className={`flex flex-col gap-1 rounded-xl border px-4 py-3 text-left transition-colors ${
             mode === "simple"
-              ? "border-purple-500 bg-purple-500/20 text-white"
-              : "border-gray-700 bg-gray-800 text-gray-300 hover:border-purple-500/70"
+              ? "border-brand-green-light bg-brand-green-light/20 text-white"
+              : "border-gray-700 bg-gray-800 text-gray-300 hover:border-brand-green-light/70"
           }`}
         >
           <span className="flex items-center gap-2 text-sm font-semibold">
@@ -320,7 +320,7 @@ export function DatasetRegistrationPanel({
               value={formState.datasetId}
               onChange={handleInputChange("datasetId")}
               placeholder="123"
-              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-brand-green-light focus:outline-none"
               required
             />
           </label>
@@ -331,7 +331,7 @@ export function DatasetRegistrationPanel({
               value={formState.fileKey}
               onChange={handleInputChange("fileKey")}
               placeholder="datasets/abc.csv"
-              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-brand-green-light focus:outline-none"
               required
             />
           </label>
@@ -344,7 +344,7 @@ export function DatasetRegistrationPanel({
               value={formState.fileSize}
               onChange={handleInputChange("fileSize")}
               placeholder="102400"
-              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-brand-green-light focus:outline-none"
               required
             />
             <span className="text-[10px] text-gray-500">
@@ -358,7 +358,7 @@ export function DatasetRegistrationPanel({
               value={formState.internalKey}
               onChange={handleInputChange("internalKey")}
               placeholder="custom_key"
-              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+              className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-brand-green-light focus:outline-none"
             />
           </label>
         </div>
@@ -371,7 +371,7 @@ export function DatasetRegistrationPanel({
                 value={formState.datasetHash}
                 onChange={handleInputChange("datasetHash")}
                 placeholder="abcdef1234..."
-                className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-purple-500 focus:outline-none"
+                className="rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-white focus:border-brand-green-light focus:outline-none"
                 required
               />
             </label>
@@ -383,7 +383,7 @@ export function DatasetRegistrationPanel({
                   Select a dataset file and we&apos;ll compute the SHA-256 hash locally in your browser.
                 </p>
               </div>
-              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-purple-500/40 px-3 py-2 text-xs font-medium text-purple-200 transition-colors hover:border-purple-400 hover:text-purple-100">
+              <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-brand-green-light/40 px-3 py-2 text-xs font-medium text-green-200 transition-colors hover:border-brand-green-light hover:text-green-100">
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -395,9 +395,9 @@ export function DatasetRegistrationPanel({
                 Pick File
               </label>
               {(hashing || connecting) && (
-                <Loader2 className="h-4 w-4 animate-spin text-purple-300" />
+                <Loader2 className="h-4 w-4 animate-spin text-brand-green-light" />
               )}
-              {(hashing || connecting) && <span className="text-[11px] text-purple-200">Processing...</span>}
+              {(hashing || connecting) && <span className="text-[11px] text-green-200">Processing...</span>}
               {!hashing && (
                 <button
                   type="button"
@@ -421,7 +421,7 @@ export function DatasetRegistrationPanel({
           </p>
           <p>
             Your wallet will sign the on-chain instruction routed through the backend to the program{" "}
-            <code className="font-mono text-purple-200">2yvGQ26fz2mvPnxDa2wcTf5Y88hr9sTSJpiZdFqMyQ4L</code>.
+            <code className="font-mono text-green-200">2yvGQ26fz2mvPnxDa2wcTf5Y88hr9sTSJpiZdFqMyQ4L</code>.
           </p>
         </div>
 
@@ -430,8 +430,8 @@ export function DatasetRegistrationPanel({
           disabled={status === "submitting" || hashing || !readyToSubmit}
           className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition-colors ${
             status === "submitting" || hashing || !readyToSubmit
-              ? "bg-purple-600/40 text-purple-200"
-              : "bg-purple-600 text-white hover:bg-purple-700"
+              ? "bg-brand-green-light/40 text-green-200"
+              : "bg-brand-green-light text-white hover:bg-brand-green-strong"
           }`}
         >
           {status === "submitting" || hashing ? (
@@ -450,7 +450,7 @@ export function DatasetRegistrationPanel({
               ? "border-green-500/40 bg-green-500/10 text-green-200"
               : status === "error"
                 ? "border-red-500/40 bg-red-500/10 text-red-200"
-                : "border-purple-500/40 bg-purple-500/10 text-purple-200"
+                : "border-brand-green-light/40 bg-brand-green-light/10 text-green-200"
           }`}
           role="status"
         >
@@ -466,8 +466,8 @@ export function DatasetRegistrationPanel({
       )}
 
       {lastResponse?.data && (
-        <div className="mt-4 space-y-2 rounded-lg border border-purple-500/30 bg-gray-900/60 p-4 text-xs text-purple-200">
-          <p className="font-semibold text-purple-100">Latest Registration Response</p>
+        <div className="mt-4 space-y-2 rounded-lg border border-brand-green-light/30 bg-gray-900/60 p-4 text-xs text-green-200">
+          <p className="font-semibold text-green-100">Latest Registration Response</p>
           <div className="grid gap-1">
             {lastResponse.data.method && (
               <p>
@@ -494,7 +494,7 @@ export function DatasetRegistrationPanel({
                 href={String(lastResponse.data.blockchainExplorerUrl)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-300 underline underline-offset-2 hover:text-purple-100"
+                className="text-green-300 underline underline-offset-2 hover:text-green-100"
               >
                 View on Solana Explorer
               </a>

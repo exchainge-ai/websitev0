@@ -917,7 +917,7 @@ export function UploadContent() {
                     <div
                       className={`w-10 h-10 rounded-full flex items-center justify-center ${
                         isActive
-                          ? "bg-purple-600 text-white"
+                          ? "bg-brand-green-light text-white"
                           : "bg-gray-700 text-gray-400"
                       }`}
                     >
@@ -925,7 +925,7 @@ export function UploadContent() {
                     </div>
                     <span
                       className={`text-sm mt-2 ${
-                        isActive ? "text-purple-400" : "text-gray-500"
+                        isActive ? "text-brand-green-light" : "text-gray-500"
                       }`}
                     >
                       {s.label}
@@ -934,7 +934,7 @@ export function UploadContent() {
                   {idx < 4 && (
                     <div
                       className={`h-1 flex-1 ${
-                        isActive ? "bg-purple-600" : "bg-gray-700"
+                        isActive ? "bg-brand-green-light" : "bg-gray-700"
                       }`}
                     ></div>
                   )}
@@ -950,7 +950,7 @@ export function UploadContent() {
                 {...getRootProps()}
                 className={`border-2 border-dashed ${
                   isDragActive
-                    ? "border-purple-500 bg-purple-900/20"
+                    ? "border-brand-green-light bg-brand-green-light/10"
                     : "border-gray-600"
                 } rounded-xl p-12 text-center cursor-pointer hover:bg-gray-800/30 transition-colors`}
               >
@@ -966,7 +966,7 @@ export function UploadContent() {
                 </p>
                 <button
                   type="button"
-                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                  className="bg-brand-green-light hover:bg-brand-green-strong text-white px-6 py-3 rounded-lg font-semibold transition-colors"
                 >
                   Browse Files
                 </button>
@@ -979,8 +979,8 @@ export function UploadContent() {
             <div className="max-w-2xl mx-auto text-center">
               <div className="relative w-24 h-24 mx-auto mb-6">
                 <div className="absolute inset-0 border-4 border-gray-700 rounded-full"></div>
-                <div className="absolute inset-0 border-4 border-t-purple-500 rounded-full animate-spin"></div>
-                <FileText className="absolute inset-0 m-auto w-10 h-10 text-purple-400" />
+                <div className="absolute inset-0 border-4 border-t-brand-green-light rounded-full animate-spin"></div>
+                <FileText className="absolute inset-0 m-auto w-10 h-10 text-brand-green-light" />
               </div>
               <h3 className="text-xl font-semibold mb-2">
                 Preparing your dataset...
@@ -999,7 +999,7 @@ export function UploadContent() {
                   </div>
                   <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-full transition-all duration-300 ease-out rounded-full"
+                      className="bg-gradient-to-r from-brand-green-light to-pink-500 h-full transition-all duration-300 ease-out rounded-full"
                       style={{ width: `${uploadProgress}%` }}
                     />
                   </div>
@@ -1023,7 +1023,7 @@ export function UploadContent() {
                   {/* Show preview image or fallback */}
                   <div className="flex justify-center mb-6">
                     {extractedSample ? (
-                      <div className="relative bg-purple-900/20 p-6 rounded-lg border-2 border-purple-500/20">
+                      <div className="relative bg-brand-green-light/10 p-6 rounded-lg border-2 border-brand-green-light/40">
                         <img
                           src={extractedSample}
                           alt="Dataset preview"
@@ -1106,7 +1106,7 @@ export function UploadContent() {
                       <button
                         type="button"
                         onClick={handleAcceptSample}
-                        className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1"
+                        className="bg-brand-green-light hover:bg-brand-green-strong text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-1"
                       >
                         <CheckCircle className="w-4 h-4" /> Accept Preview
                       </button>
@@ -1144,7 +1144,7 @@ export function UploadContent() {
                       }
                       className={`w-full bg-gray-700 border ${
                         formErrors.title ? "border-red-500" : "border-gray-600"
-                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light`}
                       placeholder="e.g. Industrial Robot Vision Dataset"
                       aria-describedby={
                         formErrors.title ? "title-error" : undefined
@@ -1179,7 +1179,7 @@ export function UploadContent() {
                         formErrors.description
                           ? "border-red-500"
                           : "border-gray-600"
-                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light`}
                       placeholder="Describe your dataset in detail, including what it contains and how it can be used"
                       aria-describedby={
                         formErrors.description ? "description-error" : undefined
@@ -1209,7 +1209,7 @@ export function UploadContent() {
                       onChange={(e) =>
                         setMetadata({ ...metadata, category: e.target.value })
                       }
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                     >
                       <option value="Robotics">Robotics</option>
                       <option value="Computer Vision">Computer Vision</option>
@@ -1235,7 +1235,7 @@ export function UploadContent() {
                       type="text"
                       id="tags"
                       onKeyDown={handleTagInput}
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                       placeholder="e.g. robotics, vision, automation"
                     />
                     {formErrors.tags && (
@@ -1248,13 +1248,13 @@ export function UploadContent() {
                       {metadata.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="bg-purple-900/50 text-purple-200 px-2 py-1 rounded-full text-xs flex items-center"
+                          className="bg-brand-green-light/10 text-brand-green-light px-2 py-1 rounded-full text-xs flex items-center"
                         >
                           {tag}
                           <button
                             type="button"
                             onClick={() => removeTag(tag)}
-                            className="ml-1 text-purple-300 hover:text-purple-100"
+                            className="ml-1 text-brand-green-light/60 hover:text-brand-green-light"
                             aria-label={`Remove ${tag} tag`}
                           >
                             ×
@@ -1283,7 +1283,7 @@ export function UploadContent() {
                       }
                       className={`w-full bg-gray-700 border ${
                         formErrors.price ? "border-red-500" : "border-gray-600"
-                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                      } rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light`}
                       placeholder="e.g. 299"
                       aria-describedby={
                         formErrors.price ? "price-error" : undefined
@@ -1300,7 +1300,7 @@ export function UploadContent() {
                   {/* License Type */}
                   <div className="border-t border-gray-700 pt-6">
                     <h4 className="font-semibold text-white mb-3 flex items-center gap-2">
-                      <Shield className="w-5 h-5 text-purple-400" />
+                      <Shield className="w-5 h-5 text-brand-green-light" />
                       Dataset License
                     </h4>
                     <label
@@ -1315,7 +1315,7 @@ export function UploadContent() {
                       onChange={(e) =>
                         setMetadata({ ...metadata, licenseType: e.target.value })
                       }
-                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                      className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                     >
                       <option value="cc0">CC0 Public Domain, Free</option>
                       <option value="cc-by">CC BY Attribution, Free</option>
@@ -1346,7 +1346,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, canCommercialUse: e.target.checked })
                           }
-                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-purple-600"
+                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-brand-green-light"
                         />
                         <span className="text-sm text-gray-300">Commercial Use Allowed</span>
                       </label>
@@ -1357,7 +1357,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, canResale: e.target.checked })
                           }
-                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-purple-600"
+                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-brand-green-light"
                         />
                         <span className="text-sm text-gray-300">Resale Rights Included</span>
                       </label>
@@ -1368,7 +1368,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, attributionRequired: e.target.checked })
                           }
-                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-purple-600"
+                          className="w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-brand-green-light"
                         />
                         <span className="text-sm text-gray-300">Attribution Required</span>
                       </label>
@@ -1399,7 +1399,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, attestationCategory: e.target.value })
                           }
-                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                           placeholder="e.g. dashcam"
                         />
                       </div>
@@ -1417,7 +1417,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, attestationSubcategory: e.target.value })
                           }
-                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                           placeholder="e.g. road-pothole"
                         />
                       </div>
@@ -1435,7 +1435,7 @@ export function UploadContent() {
                           onChange={(e) =>
                             setMetadata({ ...metadata, attestationLocation: e.target.value })
                           }
-                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          className="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-2.5 text-gray-100 focus:outline-none focus:ring-2 focus:ring-brand-green-light"
                           placeholder="e.g. NYC, California, USA"
                         />
                       </div>
@@ -1459,7 +1459,7 @@ export function UploadContent() {
                       className="relative inline-flex h-6 w-11 items-center rounded-full focus:outline-none"
                     >
                       {metadata.autoPublish ? (
-                        <ToggleRight className="h-7 w-7 text-purple-500" />
+                        <ToggleRight className="h-7 w-7 text-brand-green-light" />
                       ) : (
                         <ToggleLeft className="h-7 w-7 text-gray-500" />
                       )}
@@ -1483,7 +1483,7 @@ export function UploadContent() {
                               });
                             }
                           }}
-                          className={`w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-purple-600 ${
+                          className={`w-4 h-4 bg-gray-700 border-gray-600 rounded focus:ring-brand-green-light ${
                             formErrors.terms ? "border-red-500" : ""
                           }`}
                           aria-describedby={
@@ -1501,7 +1501,7 @@ export function UploadContent() {
                           <button
                             type="button"
                             onClick={() => setShowTermsModal(true)}
-                            className="text-purple-400 hover:text-purple-300"
+                            className="text-brand-green-light hover:text-brand-green-light/60"
                           >
                             Terms and Conditions
                           </button>{" "}
@@ -1529,7 +1529,7 @@ export function UploadContent() {
                           !metadata.price ||
                           !acceptedTerms
                             ? "bg-gray-600 cursor-not-allowed"
-                            : "bg-purple-600 hover:bg-purple-700"
+                            : "bg-brand-green-light hover:bg-brand-green-strong"
                         } text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center gap-2`}
                         aria-label="Start verification process"
                       >
@@ -1626,7 +1626,7 @@ export function UploadContent() {
 
                 <div className="mx-auto mt-8 max-w-xl rounded-lg bg-gray-700/50 p-6 text-left">
                   <h4 className="mb-2 flex items-center gap-2 font-semibold">
-                    <Sparkles className="h-5 w-5 text-purple-400" />
+                    <Sparkles className="h-5 w-5 text-brand-green-light" />
                     AI Analysis Summary
                   </h4>
                   <p className="text-sm leading-relaxed text-gray-300">
@@ -1656,8 +1656,8 @@ export function UploadContent() {
                   disabled={isSubmitting}
                   className={`mt-6 inline-flex items-center justify-center gap-2 rounded-lg px-8 py-3 font-semibold transition-colors ${
                     isSubmitting
-                      ? "cursor-not-allowed bg-purple-600/60 text-white"
-                      : "bg-purple-600 text-white hover:bg-purple-700"
+                      ? "cursor-not-allowed bg-brand-green-light/80 text-white"
+                      : "bg-brand-green-light text-white hover:bg-brand-green-strong"
                   }`}
                 >
                   {isSubmitting && <Loader2 className="h-5 w-5 animate-spin" />}

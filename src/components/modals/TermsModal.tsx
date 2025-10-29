@@ -53,7 +53,7 @@ export function TermsModal({ isOpen, onClose, onAccept }: TermsModalProps) {
             onClick={() => setActiveTab("summary")}
             className={`px-4 py-3 font-medium transition-colors border-b-2 ${
               activeTab === "summary"
-                ? "border-purple-500 text-purple-400"
+                ? "border-brand-green-light text-brand-green-light"
                 : "border-transparent text-gray-400 hover:text-gray-300"
             }`}
             type="button"
@@ -64,7 +64,7 @@ export function TermsModal({ isOpen, onClose, onAccept }: TermsModalProps) {
             onClick={() => setActiveTab("terms")}
             className={`px-4 py-3 font-medium transition-colors border-b-2 ${
               activeTab === "terms"
-                ? "border-purple-500 text-purple-400"
+                ? "border-brand-green-light text-brand-green-light"
                 : "border-transparent text-gray-400 hover:text-gray-300"
             }`}
             type="button"
@@ -75,7 +75,7 @@ export function TermsModal({ isOpen, onClose, onAccept }: TermsModalProps) {
             onClick={() => setActiveTab("privacy")}
             className={`px-4 py-3 font-medium transition-colors border-b-2 ${
               activeTab === "privacy"
-                ? "border-purple-500 text-purple-400"
+                ? "border-brand-green-light text-brand-green-light"
                 : "border-transparent text-gray-400 hover:text-gray-300"
             }`}
             type="button"
@@ -258,7 +258,7 @@ export function TermsModal({ isOpen, onClose, onAccept }: TermsModalProps) {
               type="checkbox"
               checked={accepted}
               onChange={(e) => setAccepted(e.target.checked)}
-              className="mt-1 w-4 h-4 rounded border-gray-600 text-purple-600 focus:ring-purple-500 cursor-pointer"
+              className="mt-1 w-4 h-4 rounded border-gray-600 text-brand-green-light focus:ring-brand-green-light cursor-pointer"
             />
             <span className="text-sm text-gray-300">
               I accept the Terms of Service and Privacy Policy. I confirm that I
@@ -278,7 +278,7 @@ export function TermsModal({ isOpen, onClose, onAccept }: TermsModalProps) {
             <button
               onClick={handleAccept}
               disabled={!accepted}
-              className="flex-1 px-4 py-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors"
+              className="flex-1 px-4 py-3 bg-brand-green-light hover:bg-brand-green-strong disabled:bg-gray-700 disabled:text-gray-500 disabled:cursor-not-allowed text-white rounded-xl font-semibold transition-colors"
               type="button"
             >
               Continue

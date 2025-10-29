@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, X, Shield, Copy, ExternalLink, Clock, Database, Hash, Loader2 } from "lucide-react";
+import { CheckCircle, X, Copy, ExternalLink, Clock, Database, Hash, Loader2, ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { apiFetch } from "@/lib/api/client";
@@ -27,55 +27,35 @@ export function DatasetUploadSuccessModal({
   blockchainNetwork = 'mainnet-beta',
   blockchainTimestamp: initialBlockchainTimestamp,
 }: DatasetUploadSuccessModalProps) {
-  const { getAccessToken } = usePrivy();
-  const [copiedId, setCopiedId] = useState(false);
-  const [copiedTx, setCopiedTx] = useState(false);
-
-  /**
-   * Local state for blockchain transaction data.
-   * Allows real-time updates via polling when transaction is confirmed asynchronously.
-   */
-  const [blockchainTxHash, setBlockchainTxHash] = useState(initialBlockchainTxHash);
-  const [blockchainExplorerUrl, setBlockchainExplorerUrl] = useState(initialBlockchainExplorerUrl);
-  const [blockchainTimestamp, setBlockchainTimestamp] = useState(initialBlockchainTimestamp);
+  const { getAccessToken, user } = usePrivy();
+  const [copiedHash, setCopiedHash] = useState(false);
+  const [blockchainTxHash, setBlockchainTxHash] = useState<string | null>(initialBlockchainTxHash ?? null);
+  const [blockchainExplorerUrl, setBlockchainExplorerUrl] = useState<string | null>(initialBlockchainExplorerUrl ?? null);
+  const [blockchainTimestamp, setBlockchainTimestamp] = useState<string | null>(initialBlockchainTimestamp ?? null);
   const [isPolling, setIsPolling] = useState(false);
 
-  const networkDisplayName = blockchainNetwork === 'mainnet-beta'
-    ? 'Mainnet'
-    : blockchainNetwork.charAt(0).toUpperCase() + blockchainNetwork.slice(1);
+  const networkDisplayName = blockchainNetwork === 'mainnet-beta' ? 'Mainnet' : blockchainNetwork.charAt(0).toUpperCase() + blockchainNetwork.slice(1);
 
-  const displayTimestamp = blockchainTimestamp
-    ? new Date(blockchainTimestamp).toLocaleString()
-    : new Date().toLocaleString();
+  // Format timestamp nicely
+  const formatTimestamp = (timestamp: string | null) => {
+    if (!timestamp) return new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+    const date = new Date(timestamp);
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+  };
 
-  /**
-   * Polls backend API for blockchain confirmation status.
-   * Executes every 6 seconds for up to 2 minutes or until transaction is confirmed.
-   */
+  // Polling for blockchain confirmation
   useEffect(() => {
-    if (!isOpen || !datasetId || blockchainTxHash) {
-      return;
-    }
+    if (!isOpen || !datasetId || blockchainTxHash) return;
 
     setIsPolling(true);
     let pollCount = 0;
     const maxPolls = 20;
-    const pollIntervalMs = 6000;
 
     const pollInterval = setInterval(async () => {
       pollCount++;
-
       try {
         const token = await getAccessToken();
-        const response = await apiFetch<{
-          data?: {
-            blockchainTxHash?: string;
-            blockchainExplorerUrl?: string;
-            blockchainTimestamp?: string;
-          };
-        }>(`/datasets/${datasetId}`, {
-          token: token || undefined,
-        });
+        const response = await apiFetch<{ data?: { blockchainTxHash?: string; blockchainExplorerUrl?: string; blockchainTimestamp?: string } }>(`/datasets/${datasetId}`, { token: token || undefined });
 
         if (response?.data?.blockchainTxHash) {
           setBlockchainTxHash(response.data.blockchainTxHash);
@@ -85,58 +65,47 @@ export function DatasetUploadSuccessModal({
           clearInterval(pollInterval);
         }
       } catch (error) {
-        console.error('Failed to poll blockchain confirmation status:', error);
+        console.error('Polling error:', error);
       }
 
       if (pollCount >= maxPolls) {
         setIsPolling(false);
         clearInterval(pollInterval);
       }
-    }, pollIntervalMs);
+    }, 6000);
 
     return () => {
       clearInterval(pollInterval);
       setIsPolling(false);
     };
-  }, [isOpen, datasetId, blockchainTxHash]);
+  }, [isOpen, datasetId, blockchainTxHash, getAccessToken]);
 
-  const copyId = () => {
-    if (!datasetId) return;
-    navigator.clipboard.writeText(datasetId);
-    setCopiedId(true);
-    setTimeout(() => setCopiedId(false), 2000);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedHash(true);
+    setTimeout(() => setCopiedHash(false), 2000);
   };
 
-  const copyTx = () => {
-    if (!blockchainTxHash) return;
-    navigator.clipboard.writeText(blockchainTxHash);
-    setCopiedTx(true);
-    setTimeout(() => setCopiedTx(false), 2000);
-  };
-
-  /**
-   * Generates and downloads a text receipt containing dataset and blockchain transaction details.
-   */
   const saveReceipt = () => {
     const receiptText = `
-ExchAInge Dataset Upload Receipt
-================================
+ExchAInge Upload Receipt
+========================
 
 Dataset ID: ${datasetId || 'N/A'}
-Dataset Hash: ${datasetHash || 'N/A'}
-Transaction Hash: ${blockchainTxHash || 'Pending'}
-Blockchain: Solana ${networkDisplayName}
-Timestamp: ${displayTimestamp}
-Explorer URL: ${blockchainExplorerUrl || 'Pending'}
+Hash: ${datasetHash || 'N/A'}
+Transaction: ${blockchainTxHash || 'Processing...'}
+Network: Solana ${networkDisplayName}
+Timestamp: ${formatTimestamp(blockchainTimestamp)}
+Explorer: ${blockchainExplorerUrl || 'Pending'}
 
-This receipt confirms your dataset has been registered on the Solana blockchain.
+Uploaded by: ${user?.email?.address || user?.wallet?.address || 'User'}
     `.trim();
 
     const blob = new Blob([receiptText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `exchainge-receipt-${datasetId || 'dataset'}.txt`;
+    a.download = `exchainge-receipt-${datasetId?.slice(0, 8) || 'dataset'}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -146,209 +115,131 @@ This receipt confirms your dataset has been registered on the Solana blockchain.
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl max-w-3xl w-full border border-purple-500/30 shadow-2xl shadow-purple-900/50 relative overflow-hidden">
-        {/* Animated Background Effect */}
-        <div className="absolute inset-0 bg-gradient-to-r from-purple-600/5 via-pink-600/5 to-purple-600/5 animate-pulse pointer-events-none"></div>
+    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
+      <div className="bg-[#121417] rounded-xl max-w-[600px] w-full shadow-2xl border border-gray-800 relative animate-in zoom-in-95 duration-300">
 
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-10 p-2 rounded-full hover:bg-gray-700/50 transition-all hover:rotate-90 duration-300 group"
-          aria-label="Close modal"
+          className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-800 transition-colors"
+          aria-label="Close"
         >
-          <X className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors" />
+          <X className="w-5 h-5 text-gray-400" />
         </button>
 
-        {/* Success Header */}
-        <div className="relative p-8 text-center border-b border-gray-700/50">
-          <div className="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-br from-green-400 via-emerald-500 to-green-600 rounded-full shadow-lg shadow-green-500/50 mb-6">
-            <CheckCircle className="w-14 h-14 text-white" strokeWidth={2.5} />
+        {/* Header */}
+        <div className="text-center px-8 pt-8 pb-5">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-green/10 rounded-full mb-4">
+            <CheckCircle className="w-9 h-9 text-brand-green" strokeWidth={2} />
           </div>
-          <h2 className="text-4xl font-bold text-white mb-3">
-            Upload Successful!
-          </h2>
-          <p className="text-lg text-gray-300">
-            Your dataset has been securely uploaded to the blockchain
-          </p>
+          <h2 className="text-2xl font-bold text-white mb-2">Upload Successful!</h2>
+          <p className="text-sm text-gray-400">Your dataset is now registered on Solana.</p>
         </div>
 
-        {/* Professional Receipt Card */}
-        <div className="relative p-8">
-          <div className="bg-gradient-to-br from-gray-800/90 to-gray-900/90 backdrop-blur-xl rounded-xl border border-gray-600/50 overflow-hidden shadow-2xl">
+        {/* Receipt Section */}
+        <div className="px-8 pb-6">
+          <div className="bg-[#1A1C1F] rounded-md border border-gray-800 overflow-hidden">
 
             {/* Receipt Header */}
-            <div className="bg-gradient-to-r from-purple-600/20 via-purple-500/10 to-purple-600/20 px-8 py-6 border-b border-gray-600/50">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-1 flex items-center gap-2">
-                    <Shield className="w-6 h-6 text-purple-400" />
-                    Upload Receipt
-                  </h3>
-                  <p className="text-sm text-gray-400">
-                    {blockchainTxHash ? `Solana ${networkDisplayName} • Verified` : 'Processing blockchain registration'}
-                  </p>
+            <div className="px-4 py-3 bg-gradient-to-r from-brand-green/5 to-transparent border-b border-gray-800 flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-white">Upload Receipt</h3>
+              {blockchainTxHash ? (
+                <div className="flex items-center gap-1.5 text-xs text-brand-green">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  <span>Registered on-chain</span>
                 </div>
-                <div className="flex items-center gap-2 px-4 py-2 bg-green-500/10 border border-green-500/30 rounded-lg">
-                  <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span className="text-sm font-semibold text-green-400">Confirmed</span>
+              ) : (
+                <div className="flex items-center gap-1.5 text-xs text-gray-400">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Finalizing on chain...</span>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Receipt Body */}
-            <div className="p-8 space-y-6">
+            <div className="p-4 space-y-3 text-sm">
 
-              {/* Dataset ID */}
-              {datasetId && (
-                <div className="group">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-2">
-                      <Database className="w-4 h-4" />
-                      Dataset ID
-                    </label>
-                    <button
-                      onClick={copyId}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-lg transition-all"
-                      title="Copy dataset ID"
-                    >
-                      {copiedId ? (
-                        <>
-                          <CheckCircle className="w-3.5 h-3.5 text-green-400" />
-                          <span className="text-green-400 font-medium">Copied!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 text-gray-400" />
-                          <span className="text-gray-300 font-medium">Copy</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                  <div className="bg-gray-900/60 border border-gray-600/50 rounded-lg px-4 py-3">
-                    <code className="text-sm text-purple-300 font-mono break-all">{datasetId}</code>
-                  </div>
-                </div>
-              )}
-
-              {/* Timestamp */}
-              <div>
-                <label className="text-sm font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-2 mb-2">
+              {/* Upload Time */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-2 text-gray-400">
                   <Clock className="w-4 h-4" />
-                  {blockchainTxHash ? 'Blockchain Timestamp' : 'Upload Time'}
-                </label>
-                <div className="bg-gray-900/60 border border-gray-600/50 rounded-lg px-4 py-3">
-                  <p className="text-base text-gray-200 font-mono">{displayTimestamp}</p>
+                  <span>Upload Time</span>
                 </div>
+                <span className="text-gray-200 font-mono text-xs">{formatTimestamp(blockchainTimestamp)}</span>
               </div>
 
               {/* Dataset Hash */}
               {datasetHash && (
-                <div>
-                  <label className="text-sm font-semibold text-gray-400 uppercase tracking-wide flex items-center gap-2 mb-2">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-2 text-gray-400 shrink-0">
                     <Hash className="w-4 h-4" />
-                    Content Hash
-                  </label>
-                  <div className="bg-gray-900/60 border border-gray-600/50 rounded-lg px-4 py-3">
-                    <code className="text-sm text-purple-300 font-mono break-all">{datasetHash}</code>
+                    <span>Hash</span>
                   </div>
-                </div>
-              )}
-
-              {/* Transaction Signature */}
-              {blockchainTxHash && (
-                <div className="border-t border-gray-600/50 pt-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-sm font-semibold text-green-400 uppercase tracking-wide flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      Blockchain Transaction
-                    </label>
+                  <div className="flex items-center gap-2">
+                    <code className="text-gray-300 font-mono text-xs truncate max-w-[200px]" title={datasetHash}>
+                      {datasetHash.slice(0, 16)}...{datasetHash.slice(-8)}
+                    </code>
                     <button
-                      onClick={copyTx}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gray-700/50 hover:bg-gray-600/50 rounded-lg transition-all"
-                      title="Copy transaction hash"
+                      onClick={() => copyToClipboard(datasetHash)}
+                      className="p-1 hover:bg-gray-800 rounded transition-colors"
+                      title="Copy hash"
                     >
-                      {copiedTx ? (
-                        <>
-                          <CheckCircle className="w-3.5 h-3.5 text-green-400" />
-                          <span className="text-green-400 font-medium">Copied!</span>
-                        </>
+                      {copiedHash ? (
+                        <CheckCircle className="w-3.5 h-3.5 text-brand-green" />
                       ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 text-gray-400" />
-                          <span className="text-gray-300 font-medium">Copy</span>
-                        </>
+                        <Copy className="w-3.5 h-3.5 text-gray-500" />
                       )}
                     </button>
                   </div>
-                  <div className="bg-gradient-to-r from-green-900/20 to-emerald-900/20 border border-green-500/30 rounded-lg px-4 py-3">
-                    <code className="text-sm text-green-300 font-mono break-all">{blockchainTxHash}</code>
-                  </div>
                 </div>
               )}
 
-              {/* Status Message */}
-              <div className={`rounded-xl p-4 border ${
-                blockchainTxHash
-                  ? 'bg-gradient-to-r from-green-900/20 to-emerald-900/20 border-green-500/30'
-                  : 'bg-gradient-to-r from-blue-900/20 to-cyan-900/20 border-blue-500/30'
-              }`}>
-                <div className="flex items-start gap-3">
-                  {isPolling ? (
-                    <Loader2 className="w-5 h-5 mt-0.5 text-blue-400 animate-spin" />
-                  ) : (
-                    <Shield className={`w-5 h-5 mt-0.5 ${blockchainTxHash ? 'text-green-400' : 'text-blue-400'}`} />
-                  )}
-                  <div>
-                    <p className="text-sm font-semibold text-white mb-1">
-                      {isPolling ? 'Awaiting Blockchain Confirmation...' : blockchainTxHash ? 'Blockchain Verified' : 'Processing Blockchain Registration'}
-                    </p>
-                    <p className="text-xs text-gray-300 leading-relaxed">
-                      {blockchainTxHash
-                        ? 'Your dataset registration has been permanently recorded on the Solana blockchain. This provides immutable proof of ownership and upload timestamp.'
-                        : isPolling
-                        ? 'Your dataset has been successfully uploaded. Waiting for blockchain transaction to be confirmed...'
-                        : 'Your dataset has been successfully uploaded and is being processed. Blockchain registration will complete shortly.'}
-                    </p>
-                  </div>
+              {/* Blockchain TX */}
+              {blockchainTxHash && blockchainExplorerUrl && (
+                <div className="pt-2 border-t border-gray-800">
+                  <a
+                    href={blockchainExplorerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-2 rounded-md hover:bg-gray-800/50 transition-colors group"
+                  >
+                    <div className="flex items-center gap-2 text-gray-400">
+                      <Database className="w-4 h-4" />
+                      <span>View on Solana Explorer</span>
+                    </div>
+                    <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-brand-green transition-colors" />
+                  </a>
                 </div>
+              )}
+
+              {/* Uploaded By */}
+              <div className="flex items-start justify-between text-xs">
+                <span className="text-gray-500">Uploaded by</span>
+                <span className="text-gray-400 font-mono">
+                  {user?.email?.address || (user?.wallet?.address ? `${user.wallet.address.slice(0, 6)}...${user.wallet.address.slice(-4)}` : 'User')}
+                </span>
               </div>
             </div>
-
-            {/* Receipt Footer Actions */}
-            <div className="bg-gray-800/50 px-8 py-6 border-t border-gray-600/50 flex flex-col sm:flex-row gap-3">
-              {blockchainTxHash && blockchainExplorerUrl ? (
-                <a
-                  href={blockchainExplorerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3.5 rounded-xl font-semibold transition-all shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transform hover:scale-[1.02]"
-                >
-                  <ExternalLink className="w-5 h-5" />
-                  View on Solana Explorer
-                </a>
-              ) : (
-                <button
-                  onClick={saveReceipt}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-6 py-3.5 rounded-xl font-semibold transition-all shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transform hover:scale-[1.02]"
-                >
-                  <Copy className="w-5 h-5" />
-                  Save Receipt
-                </button>
-              )}
-
-              {datasetId && (
-                <a
-                  href={`/marketplace?highlight=${datasetId}`}
-                  className="flex-1 flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-6 py-3.5 rounded-xl font-semibold transition-all"
-                  onClick={onClose}
-                >
-                  <Database className="w-5 h-5" />
-                  View in Marketplace
-                </a>
-              )}
-            </div>
           </div>
+        </div>
+
+        {/* Actions */}
+        <div className="px-8 pb-6 flex flex-col gap-2">
+          <button
+            onClick={saveReceipt}
+            className="w-full bg-brand-green hover:bg-brand-green-strong text-primary-foreground font-semibold py-3 rounded-lg transition-colors flex items-center justify-center gap-2"
+          >
+            <Copy className="w-4 h-4" />
+            Save Receipt
+          </button>
+          <a
+            href={`/marketplace?highlight=${datasetId}`}
+            onClick={onClose}
+            className="w-full text-center text-gray-400 hover:text-white py-2 text-sm transition-colors flex items-center justify-center gap-1"
+          >
+            View Your Dataset
+            <ArrowRight className="w-3.5 h-3.5" />
+          </a>
         </div>
       </div>
     </div>

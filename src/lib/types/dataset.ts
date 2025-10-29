@@ -34,6 +34,9 @@ export interface DatasetCardBase {
   isUserUploaded?: boolean;
   verificationStatus?: "verified" | "pending" | "failed";
   isMarketplaceOnly?: boolean;
+  blockchainTxHash?: string | null;
+  blockchainExplorerUrl?: string | null;
+  datasetHash?: string | null;
 }
 
 export interface ExtendedDataset extends DatasetCardBase {
