@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { PrivyErrorBoundary } from "./PrivyErrorBoundary";
 import { SolanaProviders } from "./SolanaProviders";
 import { toSolanaWalletConnectors } from "@privy-io/react-auth/solana";
+import { UserSyncProvider } from "./UserSyncProvider";
 
 type PrivyModule = typeof import("@privy-io/react-auth");
 
@@ -98,7 +99,9 @@ export function PrivyWrapper({ children }: PrivyWrapperProps) {
           }}
         >
           <SolanaProviders>
-            <div suppressHydrationWarning>{children}</div>
+            <UserSyncProvider>
+              <div suppressHydrationWarning>{children}</div>
+            </UserSyncProvider>
           </SolanaProviders>
         </PrivyProvider>
       );

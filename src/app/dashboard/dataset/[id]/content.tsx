@@ -19,17 +19,19 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { AuthGuard } from "@/components/guards/AuthGuard";
+import { useUserSync } from "@/components/providers/UserSyncProvider";
+import DatasetCard from "@/components/shared/DatasetCard";
+import { OnChainAccountViewer } from "@/components/solana/OnChainAccountViewer";
+import { XRPPaymentFlow } from "@/components/xrp-payment-flow";
+import { apiFetch, ApiError } from "@/lib/api/client";
 import {
   datasetDtoToCard,
   formatBytes,
   formatPriceUsd,
   type DatasetDTO,
 } from "@/lib/mappers/dataset";
-import { DATASET_STATUS, type DatasetStatus } from "@/lib/types/dataset";
-import DatasetCard from "@/components/shared/DatasetCard";
 import { LICENSE_METADATA } from "@/lib/types/license";
-import { apiFetch, ApiError } from "@/lib/api/client";
-import { OnChainAccountViewer } from "@/components/solana/OnChainAccountViewer";
+import { DATASET_STATUS, type DatasetStatus } from "@/lib/types/dataset";
 
 interface DatasetDetailContentProps {
   params: {
@@ -105,8 +107,10 @@ const UPLOAD_STATUS_CONFIG: Record<
 export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
   const datasetId = params?.id;
   const { user, getAccessToken } = usePrivy();
+  const { ensureUserSynced } = useUserSync();
   const router = useRouter();
 
+  // All hooks must be called before any conditional returns
   const [dataset, setDataset] = useState<DatasetDTO | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -160,6 +164,8 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
           throw new Error("Missing access token");
         }
 
+        await ensureUserSynced();
+
         const payload = await apiFetch<{ data?: DatasetDTO }>(
           `/datasets/${encodeURIComponent(datasetId)}`,
           {
@@ -185,7 +191,7 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
         }
       }
     },
-    [datasetId, getAccessToken],
+    [datasetId, ensureUserSynced, getAccessToken],
   );
 
   useEffect(() => {
@@ -361,6 +367,17 @@ export function DatasetDetailContent({ params }: DatasetDetailContentProps) {
                   </p>
                 </div>
               </div>
+
+              {!isOwner && dataset.status === 'live' && dataset.userId && (
+                <XRPPaymentFlow
+                  datasetId={String(dataset.id)}
+                  datasetTitle={dataset.title ?? 'Dataset'}
+                  priceUsd={typeof dataset.priceUsd === 'number' ? dataset.priceUsd : parseFloat(String(dataset.priceUsd || 0))}
+                  sellerId={dataset.userId}
+                  currentUserId={user?.id}
+                />
+              )}
+
               {dataset.tags?.length ? (
                 <div>
                   <p className="text-sm text-gray-400 mb-2">Tags</p>

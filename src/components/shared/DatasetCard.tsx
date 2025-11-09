@@ -287,11 +287,13 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                   login();
                   return;
                 }
-                // In a real app, this would open a purchase flow
-                // For marketplace items, show a simple alert for demo purposes
-                alert(
-                  `This would open the purchase flow for "${dataset.title}" in a real application.`,
-                );
+                // Navigate to dataset detail page for purchase
+                const datasetId = encodeURIComponent(dataset.id);
+                router.push(`/dashboard/dataset/${datasetId}`);
+              }}
+              onMouseEnter={() => {
+                const url = `/dashboard/dataset/${encodeURIComponent(dataset.id)}`;
+                router.prefetch(url);
               }}
               className={styles.actionButton}
             >
