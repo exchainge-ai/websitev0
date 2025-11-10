@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Footer from "@/components/layout/Footer";
-import Navigation from "@/components/layout/Navigation";
+import Footer from "../src/components/layout/Footer";
+import Navigation from "../src/components/layout/Navigation";
 import { Providers } from "./providers";
-import "@/lib/console-override";
-import { WebVitalsReporter } from "@/lib/web-vitals";
+import "../src/lib/console-override";
+import { WebVitalsReporter } from "../src/lib/web-vitals";
 import { Analytics } from "@vercel/analytics/next";
 import { Toaster } from "react-hot-toast";
 

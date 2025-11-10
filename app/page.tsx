@@ -19,7 +19,7 @@ import {
   OptimizedHero,
   PriorityHeading,
   PriorityText,
-} from "@/components/optimized/PriorityComponents";
+} from "../src/components/optimized/PriorityComponents";
 
 export default function Home() {
   const router = useRouter();
