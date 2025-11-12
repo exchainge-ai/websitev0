@@ -77,10 +77,8 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
   const [isPaymentProcessing, setIsPaymentProcessing] = React.useState(false);
   const [apiHealthy, setApiHealthy] = React.useState<boolean>(true);
 
-  // USDC token mint address, uses centralized config
   const USDC_MINT = useMemo(() => new PublicKey(getUsdcMint()), []);
 
-  // Fetch USDC balance when wallet connects with rate limiting
   React.useEffect(() => {
     let isMounted = true;
     
@@ -90,9 +88,47 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
         return;
       }
 
+      const cacheKey = publicKey.toBase58();
+      
+      // Global cache and lock
+      if (typeof window !== 'undefined') {
+        const globalCache = (window as any).__usdcBalanceCache || {};
+        const globalLocks = (window as any).__usdcBalanceLocks || {};
+        
+        (window as any).__usdcBalanceCache = globalCache;
+        (window as any).__usdcBalanceLocks = globalLocks;
+        
+        const now = Date.now();
+        const cached = globalCache[cacheKey];
+        
+        // Return cached if less than 30 seconds old
+        if (cached && (now - cached.timestamp) < 30000) {
+          if (isMounted) {
+            setUsdcBalance(cached.balance);
+          }
+          return;
+        }
+        
+        // If already fetching, wait for result
+        if (globalLocks[cacheKey]) {
+          const waitForResult = setInterval(() => {
+            const latest = globalCache[cacheKey];
+            if (latest && isMounted) {
+              setUsdcBalance(latest.balance);
+              clearInterval(waitForResult);
+            }
+          }, 100);
+          
+          setTimeout(() => clearInterval(waitForResult), 5000);
+          return;
+        }
+        
+        // Set lock
+        globalLocks[cacheKey] = true;
+      }
+
       try {
-        // Add delay to avoid rate limiting
-        await new Promise(resolve => setTimeout(resolve, 500));
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
         if (!isMounted) return;
         
@@ -100,18 +136,25 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
           mint: USDC_MINT
         });
 
-        if (isMounted && tokenAccounts.value.length > 0) {
-          const balance = tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount;
+        const balance = tokenAccounts.value.length > 0 
+          ? tokenAccounts.value[0].account.data.parsed.info.tokenAmount.uiAmount 
+          : 0;
+        
+        if (isMounted) {
           setUsdcBalance(balance);
-        } else if (isMounted) {
-          setUsdcBalance(0);
+          
+          if (typeof window !== 'undefined') {
+            (window as any).__usdcBalanceCache[cacheKey] = { balance, timestamp: Date.now() };
+            delete (window as any).__usdcBalanceLocks[cacheKey];
+          }
         }
       } catch (error: any) {
-        if (isMounted) {
-          // Don't log 429 errors, just silently fail
-          if (!error?.message?.includes('429')) {
-            console.error("Error fetching USDC balance:", error);
-          }
+        if (typeof window !== 'undefined') {
+          delete (window as any).__usdcBalanceLocks[cacheKey];
+        }
+        
+        if (isMounted && !error?.message?.includes('429')) {
+          console.error("Error fetching USDC balance:", error);
           setUsdcBalance(null);
         }
       }
@@ -559,17 +602,27 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                       setTxHash(null);
                     }
                   } else if (res.status === 402) {
-                    // Payment required (x402 flow)
                     const data = await res.json();
                     setPaymentRequired(true);
                     setPaymentInstructions(data.payment);
                     setIsLoading(false);
                     
-                    console.log("[Payment Required]", {
-                      datasetId: dataset.id,
-                      paymentInstructions: data.payment,
-                      timestamp: new Date().toISOString()
-                    });
+                    console.log("=".repeat(70));
+                    console.log("[x402 SERVER RESPONSE]");
+                    console.log(`HTTP Status: ${res.status} Payment Required`);
+                    console.log("=".repeat(70));
+                    console.log(JSON.stringify(data, null, 2));
+                    console.log("=".repeat(70));
+                    
+                    if (data.payment) {
+                      const { network, recipient, amount, amountUsd, currency, cluster } = data.payment;
+                      console.log("\n[x402 PAYMENT INSTRUCTIONS]");
+                      console.log(`Network: ${network} (${cluster || 'devnet'})`);
+                      console.log(`Recipient: ${recipient}`);
+                      console.log(`Amount: ${amount} ${currency} (~$${amountUsd || amount})`);
+                      console.log("\nTo complete purchase, pay with your Solana wallet or run:");
+                      console.log("npm run agent");
+                    }
                   } else if (res.status === 403) {
                     // Forbidden - Current backend behavior (no license/ownership)
                     // Treat as payment required for now
@@ -683,7 +736,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
             {/* Inline UI for payment, error, and download status */}
             {paymentRequired && paymentInstructions && (
               <div className="mt-3 p-3 bg-gray-900 border border-yellow-400 rounded text-yellow-200">
-                {paymentInstructions.wallet.includes("Demo:") && (
+                {paymentInstructions.wallet?.includes("Demo:") && (
                   <div className="mb-2 p-2 bg-orange-900/30 border border-orange-500 rounded text-orange-400 text-xs">
                     <b>Demo Mode:</b> Backend x402 integration not complete. Payment flow UI ready but backend needs to:
                     <ul className="mt-1 ml-4 list-disc text-xs">
@@ -702,7 +755,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                   <div className="font-semibold mb-1 text-blue-300">How it works:</div>
                   <ol className="ml-4 list-decimal space-y-0.5 text-xs text-blue-200">
                     <li>Connect your Solana wallet below</li>
-                    <li>Click "Send {paymentInstructions.amount} USDC"</li>
+                    <li>Click "Send {paymentInstructions.amount} {paymentInstructions.currency || 'SOL'}"</li>
                     <li>Approve transaction in your wallet popup</li>
                     <li>We automatically verify payment with backend</li>
                     <li>Dataset unlocks immediately after confirmation</li>
@@ -710,7 +763,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                 </div>
 
                 <div className="text-xs space-y-0.5 mb-2 opacity-70">
-                  <div><b>Amount:</b> {paymentInstructions.amount} USDC</div>
+                  <div><b>Amount:</b> {paymentInstructions.amount} {paymentInstructions.currency || 'SOL'} {paymentInstructions.amountUsd ? `(~$${paymentInstructions.amountUsd})` : ''}</div>
                   <div><b>Network:</b> Solana Devnet</div>
                 </div>
 
@@ -729,7 +782,7 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                       <div className="text-green-400">Connected</div>
                       <div>Address: {publicKey?.toBase58().slice(0, 8)}...{publicKey?.toBase58().slice(-4)}</div>
                       {usdcBalance !== null && (
-                        <div>Balance: {usdcBalance.toFixed(2)} USDC</div>
+                        <div>Balance: {usdcBalance.toFixed(4)} {paymentInstructions.currency || 'SOL'}</div>
                       )}
                     </div>
                   ) : (
@@ -750,8 +803,8 @@ const DatasetCard: React.FC<DatasetCardProps> = ({ dataset }) => {
                       {isPaymentProcessing 
                         ? "Processing Payment..." 
                         : (usdcBalance !== null && usdcBalance < parseFloat(paymentInstructions.amount))
-                        ? `Insufficient USDC (need ${paymentInstructions.amount})`
-                        : `Send ${paymentInstructions.amount} USDC & Unlock`}
+                        ? `Insufficient ${paymentInstructions.currency || 'SOL'} (need ${paymentInstructions.amount})`
+                        : `Send ${paymentInstructions.amount} ${paymentInstructions.currency || 'SOL'} & Unlock`}
                     </button>
                     <div className="text-xs text-gray-400 text-center">
                       Click once - we handle everything automatically
